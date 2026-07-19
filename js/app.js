@@ -10,6 +10,7 @@ import { setupHotspots, updateHotspots } from './hotspots.js';
 import { initMinimap } from './minimap.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { initNotificationUI } from './notification-ui.js';
+import { initDashboard } from './dashboard.js';
 
 async function init() {
     const container = document.getElementById('canvas-container');
@@ -33,16 +34,58 @@ async function init() {
     initUI();
     initMinimap();
     initNotificationUI();
+    initDashboard();
     
     // Start the cinematic camera fly system and animation loop
     startAnimationLoop(renderer, scene, camera);
 
-    // Hook up Return Button
-    document.getElementById('btn-return').addEventListener('click', () => {
+    // Switch between Landing Page and Operations Dashboard
+    const btnHome = document.getElementById('dock-home');
+    const btnOperations = document.getElementById('dock-operations');
+    const dashboardView = document.getElementById('dashboard-view');
+    const hotspotsContainer = document.getElementById('hotspots-container');
+    const minimapContainer = document.querySelector('.mini-map-container');
+    const infoCard = document.getElementById('info-card');
+    const btnReturn = document.getElementById('btn-return');
+
+    function showDashboard() {
+        dashboardView.classList.remove('hidden');
+        hotspotsContainer.classList.add('hidden');
+        minimapContainer.classList.add('hidden');
+        infoCard.classList.add('hidden');
+        btnReturn.classList.add('hidden');
+        
+        document.querySelectorAll('.dock-item').forEach(item => item.classList.remove('active'));
+        if (btnOperations) btnOperations.classList.add('active');
+    }
+
+    function showLandingPage() {
+        dashboardView.classList.add('hidden');
+        hotspotsContainer.classList.remove('hidden');
+        minimapContainer.classList.remove('hidden');
         resetCamera();
-        document.getElementById('info-card').classList.add('hidden');
-        document.getElementById('btn-return').classList.add('hidden');
-    });
+        
+        document.querySelectorAll('.dock-item').forEach(item => item.classList.remove('active'));
+        if (btnHome) btnHome.classList.add('active');
+    }
+
+    if (btnHome) btnHome.addEventListener('click', showLandingPage);
+    if (btnOperations) btnOperations.addEventListener('click', showDashboard);
+
+    // Bind "View Details" button on Info Card to switch to Operations Dashboard
+    const btnViewDetails = infoCard ? infoCard.querySelector('.primary-btn') : null;
+    if (btnViewDetails) {
+        btnViewDetails.addEventListener('click', showDashboard);
+    }
+
+    // Hook up Return Button
+    if (btnReturn) {
+        btnReturn.addEventListener('click', () => {
+            resetCamera();
+            infoCard.classList.add('hidden');
+            btnReturn.classList.add('hidden');
+        });
+    }
     
     // Debug Panel Setup
     const dbgPanel = document.getElementById('debug-panel');

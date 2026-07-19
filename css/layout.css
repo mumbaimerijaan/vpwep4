@@ -105,8 +105,8 @@
 /* Dashboard Container & Grid Layout */
 .dashboard-view {
     position: absolute;
-    top: 120px;
-    bottom: 120px;
+    top: 116px;
+    bottom: 110px;
     left: 32px;
     right: 32px;
     pointer-events: auto;
@@ -185,7 +185,7 @@
 }
 
 .live-timeline-card {
-    height: 100px;
+    height: 85px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;

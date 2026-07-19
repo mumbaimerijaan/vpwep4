@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stadium Digital Twin - Premium Edition</title>
+    
+    <!-- Using Inter as a close approximation to SF Pro for web -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "./node_modules/three/build/three.module.js",
+        "three/examples/jsm/": "./node_modules/three/examples/jsm/",
+        "gsap": "./node_modules/gsap/index.js"
+      }
+    }
+    </script>
+
+    <link rel="stylesheet" href="css/base.css?v=3">
+    <link rel="stylesheet" href="css/layout.css?v=3">
+    <link rel="stylesheet" href="css/ui.css?v=3">
+    <link rel="stylesheet" href="css/animations.css?v=3">
+</head>
+<body>
+    <div id="canvas-container"></div>
+    <div class="vignette"></div>
+    
+    <!-- Hotspot Container for 3D tracking -->
+    <div id="hotspots-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; overflow: hidden;"></div>
+
+    <!-- UI Overlay Layer (Pointer events mostly none except for interactive elements) -->
+    <div class="ui-overlay">
+        
+        <!-- Top Floating Glass Bar -->
+        <header class="top-bar glass-panel">
+            <div class="logo-area">
+                <span class="logo-text">FIFA</span>
+                <div class="logo-sub">
+                    <span class="fwc-text">WORLD CUP 2026™</span>
+                    <span class="op-text">OPERATIONS CENTER</span>
+                </div>
+            </div>
+            
+            <div class="status-items">
+                <div class="status-item">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--accent-orange)" stroke-width="2" fill="none"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path><circle cx="12" cy="12" r="4"></circle></svg>
+                    <div class="status-col">
+                        <span class="status-val" id="weather-val">32°C</span>
+                        <span class="status-lbl">Weather</span>
+                    </div>
+                </div>
+                
+                <div class="status-divider"></div>
+                
+                <div class="status-item">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <div class="status-col">
+                        <span class="status-val" id="attendance-val">38,456</span>
+                        <span class="status-lbl">Attendance</span>
+                    </div>
+                </div>
+                
+                <div class="status-divider"></div>
+
+                <div class="status-item">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    <div class="status-col">
+                        <span class="status-val" id="capacity-val">40,000</span>
+                        <span class="status-lbl">Capacity</span>
+                    </div>
+                </div>
+
+                <div class="status-divider"></div>
+
+                <div class="status-item">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--accent-blue)" stroke-width="2" fill="none"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                    <div class="status-col">
+                        <span class="status-val">Normal</span>
+                        <span class="status-lbl">Queue Status</span>
+                    </div>
+                </div>
+
+                <div class="status-divider"></div>
+
+                <div class="status-item">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--accent-green)" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    <div class="status-col">
+                        <span class="status-val">Clear</span>
+                        <span class="status-lbl">Emergency</span>
+                    </div>
+                </div>
+                
+                <div class="status-divider"></div>
+                
+                <div class="status-item">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <div class="status-col">
+                        <span class="status-val" id="local-time-val">19:45</span>
+                        <span class="status-lbl">Local Time</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Top Right Actions -->
+        <div class="top-right-actions">
+            <button class="icon-btn glass-btn" aria-label="Notifications" id="btn-notifications">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                <span class="badge" id="notifications-badge">3</span>
+            </button>
+            <button class="icon-btn glass-btn help-btn" aria-label="Operations">
+                Venue: Al Janoub Stadium <span class="live-pulse" style="color: #ff3b30; font-weight: 800; letter-spacing: 1px;"><div class="dot-red" style="background: #ff3b30; box-shadow: none;"></div> LIVE</span>
+            </button>
+            <button class="icon-btn glass-btn" aria-label="Fullscreen" id="btn-fullscreen">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+            </button>
+        </div>
+
+        <!-- Left Contextual Info Card (Hidden until hotspot click) -->
+        <div id="info-card" class="glass-panel slide-in-left hidden">
+            <!-- Left Column: Details -->
+            <div class="card-details" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                <div class="card-header">
+                    <div>
+                        <h2 id="card-title">GATE A – MAIN ENTRANCE</h2>
+                        <span id="card-status-pill" class="status-pill status-operational"><span class="dot"></span> <span id="card-status-text">OPERATIONAL</span></span>
+                    </div>
+                    <button id="card-close" class="icon-btn subtle-btn">
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                
+                <div class="card-stats" style="margin-top: 16px; display: flex; flex-direction: column; gap: 14px; flex-grow: 1;">
+                    <div class="stat-row">
+                        <div class="stat-icon"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                        <div class="stat-info">
+                            <span class="stat-lbl">Occupancy</span>
+                            <div class="progress-bar-container">
+                                <span class="stat-val" id="card-occupancy">78%</span>
+                                <div class="progress-track"><div class="progress-fill" style="width: 78%;" id="card-occupancy-bar"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <div class="stat-icon"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                        <div class="stat-info">
+                            <span class="stat-lbl">Queue Length</span>
+                            <span class="stat-val"><span id="card-queue">240</span> <span class="stat-unit">people</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <div class="stat-icon"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                        <div class="stat-info">
+                            <span class="stat-lbl">Average Wait Time</span>
+                            <span class="stat-val"><span id="card-wait">18</span> <span class="stat-unit">min</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <div class="stat-icon stat-success"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+                        <div class="stat-info">
+                            <span class="stat-lbl">Status</span>
+                            <span class="stat-val color-success" id="card-recommendation">Normal</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="glass-btn primary-btn mt-4" style="width: 100%;">
+                    View Details <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </div>
+            
+            <!-- Right Column: Location Image -->
+            <div class="card-image-container" style="width: 100%; height: 100%; border-radius: 12px; overflow: hidden; position: relative;">
+                <img id="card-location-image" src="assets/images/locations/vip_lounge.png" alt="Location View" style="width: 100%; height: 100%; object-fit: cover; min-height: 280px; display: block; border-radius: 12px;">
+            </div>
+        </div>
+
+        <!-- Bottom Center Apple-style Dock -->
+        <nav class="bottom-dock glass-panel">
+            <button class="dock-item active">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <span>HOME</span>
+            </button>
+            <button class="dock-item">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <span>OPERATIONS</span>
+            </button>
+            <button class="dock-item">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                <span>ANALYTICS</span>
+            </button>
+            <button class="dock-item">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><path d="M4 16c4 0 8-4 8-8"></path><path d="M12 20c0-4 4-8 8-8"></path></svg>
+                <span>TRANSPORT</span>
+            </button>
+            <button class="dock-item">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>SECURITY</span>
+            </button>
+            <button class="dock-item">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <span>SETTINGS</span>
+            </button>
+        </nav>
+
+        <div class="mini-map-container" style="z-index: 100; position: absolute; bottom: 32px; right: 32px; display: flex; flex-direction: column; align-items: center; gap: 12px; touch-action: none;">
+            <div class="mini-map" id="mini-map">
+                <div id="minimap-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/images/wireframe.png'); background-size: 85%; background-position: center; background-repeat: no-repeat; opacity: 0.9; mix-blend-mode: screen; transform: rotate(90deg);"></div>
+                <div id="minimap-dot" class="map-center-dot" style="transition: none;"></div>
+            </div>
+            <div class="glass-panel" style="padding: 6px 16px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--text-light); text-align: center; border: 1px solid var(--glass-border); box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+                Drag to View
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Return to Main View Button -->
+    <button id="btn-return" class="glass-btn primary-btn hidden" style="position: absolute; bottom: 160px; left: 50%; transform: translateX(-50%); width: auto; padding: 0 24px; z-index: 100; background: rgba(0, 0, 0, 0.75) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="#ffffff" stroke-width="2" fill="none"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Return to Main View
+    </button>
+
+    <!-- Temporary Debug Popup -->
+    <div id="debug-panel" class="glass-panel hidden" style="position: absolute; top: 20px; left: 20px; z-index: 999; width: 300px; color: var(--text-light); background: var(--glass-bg);">
+        <h3 style="font-size: 14px; margin-bottom: 12px;" id="debug-title">Camera Debug</h3>
+        
+        <div id="debug-cam-group" style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; margin-bottom: 12px;">
+            <label style="display:flex; justify-content:space-between">Cam X: <input type="number" id="dbg-cx" step="5" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Cam Y: <input type="number" id="dbg-cy" step="5" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Cam Z: <input type="number" id="dbg-cz" step="5" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Target X: <input type="number" id="dbg-tx" step="5" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Target Y: <input type="number" id="dbg-ty" step="5" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Target Z: <input type="number" id="dbg-tz" step="5" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Cam Zoom: <input type="number" id="dbg-zoom" step="0.1" style="width: 80px;"></label>
+        </div>
+
+        <div id="debug-mod-group" class="hidden" style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; margin-bottom: 12px;">
+            <label style="display:flex; justify-content:space-between">Model X: <input type="number" id="dbg-mx" step="1" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Model Y: <input type="number" id="dbg-my" step="1" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Model Z: <input type="number" id="dbg-mz" step="1" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Rot X: <input type="number" id="dbg-rx" step="0.1" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Rot Y: <input type="number" id="dbg-ry" step="0.1" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Rot Z: <input type="number" id="dbg-rz" step="0.1" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Scale: <input type="number" id="dbg-mscale" step="0.1" style="width: 80px;"></label>
+        </div>
+        
+        <textarea id="debug-output" style="width: 100%; height: 60px; font-size: 10px; margin-bottom: 12px; background: rgba(255,255,255,0.5); border: 1px solid var(--glass-border); color: #000; padding: 4px;" readonly></textarea>
+        
+        <div style="display: flex; gap: 8px;">
+            <button id="btn-debug-copy" class="glass-btn primary-btn" style="flex: 1; height: 32px; font-size: 12px; color: #000;">Copy</button>
+            <button id="btn-debug-cancel" class="glass-btn" style="flex: 1; height: 32px; font-size: 12px; color: #000; background: rgba(255,255,255,0.2);">Cancel</button>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js?v=4"></script>
+</body>
+</html>

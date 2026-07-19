@@ -34,6 +34,15 @@ function setupTabs() {
             
             const selectedTab = item.getAttribute('data-tab');
             console.log(`Switched dashboard sidebar tab context to: ${selectedTab}`);
+            
+            // Toggle panels visibility
+            const panels = document.querySelectorAll('.db-panel');
+            panels.forEach(p => p.classList.remove('active'));
+            
+            const activePanel = document.getElementById(`panel-${selectedTab}`);
+            if (activePanel) {
+                activePanel.classList.add('active');
+            }
         });
     });
 }

@@ -1,0 +1,15 @@
+steps:
+  # Step 1: Synchronize the repository contents with your Google Cloud Storage bucket
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+      - 'gsutil'
+      - '-m'
+      - 'rsync'
+      - '-r'
+      - '-d'
+      - '.'
+      - 'gs://vpwc4bucket'
+
+# Optional: Adjust substitution variables if needed
+options:
+  logging: CLOUD_LOGGING_ONLY

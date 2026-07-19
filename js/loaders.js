@@ -4,10 +4,10 @@ export function loadModel(scene) {
     return new Promise((resolve, reject) => {
         const loader = new GLTFLoader();
         
-        // GitHub Release Asset URL (which natively supports CORS and keeps the heavy GLB out of git source tree)
-        const modelUrl = 'https://github.com/mumbaimerijaan/vpwep4/releases/download/v1.0.0/stadium.glb';
+        // Google Drive Usercontent direct CDN endpoint
+        const modelUrl = 'https://drive.usercontent.google.com/download?id=1QVgfP9BEXjRx7FbGbxSZfRIuCQs-WGGA&export=download';
         
-        console.log("Loading Al Janoub Stadium model from GitHub CDN...");
+        console.log("Loading Al Janoub Stadium model from Google Drive Usercontent CDN...");
 
         loader.load(
             modelUrl,

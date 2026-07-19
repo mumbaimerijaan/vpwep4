@@ -177,12 +177,28 @@
     flex-shrink: 0;
 }
 
-.stadium-intel-card {
+.db-panel-switcher {
     height: 100%;
-    display: flex;
-    flex-direction: column;
     min-height: 0;
 }
+
+.db-panel {
+    display: none;
+    height: 100%;
+    flex-direction: column;
+    min-height: 0;
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 16px;
+    padding: 10px 14px;
+    box-sizing: border-box;
+}
+
+.db-panel.active {
+    display: flex !important;
+}
+
+
 
 .live-timeline-card {
     height: 85px;
@@ -226,7 +242,7 @@
     .db-left-col, .db-center-col, .db-right-col {
         height: auto;
     }
-    .sidebar-nav, .current-incidents-card, .live-timeline-card, .stadium-intel-card {
+    .sidebar-nav, .current-incidents-card, .live-timeline-card, .db-panel-switcher, .db-panel {
         height: auto;
         flex: none;
     }

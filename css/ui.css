@@ -1154,7 +1154,7 @@
 }
 
 /* Stadium Crowd Intelligence Card styles */
-.stadium-intel-card {
+.db-panel {
     background: rgba(0, 0, 0, 0.4) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-radius: 16px;

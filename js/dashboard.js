@@ -205,7 +205,7 @@ function animateEntrance() {
     // Animate left/right panels
     const sidebar = document.querySelector('.sidebar-nav');
     const incidents = document.querySelector('.current-incidents-card');
-    const heatmap = document.querySelector('.stadium-intel-card');
+    const heatmap = document.querySelector('.db-panel-switcher');
     const timeline = document.querySelector('.live-timeline-card');
     const copilot = document.querySelector('.copilot-card');
     

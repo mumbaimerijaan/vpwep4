@@ -11,6 +11,8 @@ export function initNotificationUI() {
     const panel = document.createElement('div');
     panel.id = 'notifications-panel';
     panel.className = 'notifications-panel glass-panel hidden';
+    panel.setAttribute('aria-live', 'polite');
+    panel.setAttribute('aria-relevant', 'all');
     document.body.appendChild(panel);
 
     // Create the Modal Alert Dialog dynamically

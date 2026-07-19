@@ -4,11 +4,13 @@ import { updateHotspots } from './hotspots.js';
 
 let time = 0;
 let driftTarget = { x: 0, y: 0 };
+let isCameraMoving = false;
 
 export let basePosition = new THREE.Vector3(-260, 140.00, -90.00);
 export let lookAtTarget = new THREE.Vector3(0, 10, 0);
 
 export function flyToHotspot(targetPos) {
+    isCameraMoving = true;
     const currentSpherical = new THREE.Spherical().setFromVector3(basePosition);
     const targetSpherical = new THREE.Spherical().setFromVector3(targetPos);
     
@@ -30,11 +32,15 @@ export function flyToHotspot(targetPos) {
         y: targetPos.y,
         z: targetPos.z,
         duration: 1.5,
-        ease: "power2.inOut"
+        ease: "power2.inOut",
+        onComplete: () => {
+            isCameraMoving = false;
+        }
     });
 }
 
 export function resetCamera() {
+    isCameraMoving = true;
     gsap.to(basePosition, {
         x: -260,
         y: 140.00,
@@ -48,11 +54,16 @@ export function resetCamera() {
         y: 10,
         z: 0,
         duration: 2.0,
-        ease: "power3.inOut"
+        ease: "power3.inOut",
+        onComplete: () => {
+            isCameraMoving = false;
+        }
     });
 }
 
 export function startAnimationLoop(renderer, scene, camera) {
+    // Force initial alignment once
+    camera.lookAt(lookAtTarget);
     
     // Setup a continuous gentle drift using GSAP on a proxy object
     gsap.to(driftTarget, {
@@ -73,7 +84,9 @@ export function startAnimationLoop(renderer, scene, camera) {
         camera.position.y = basePosition.y + driftTarget.y * Math.cos(time * 0.3);
         camera.position.z = basePosition.z + driftTarget.x * Math.cos(time * 0.4);
         
-        camera.lookAt(lookAtTarget);
+        if (isCameraMoving) {
+            camera.lookAt(lookAtTarget);
+        }
         
         // Update 2D hotspots to track 3D positions
         updateHotspots(camera);

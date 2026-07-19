@@ -39,3 +39,5 @@ export const STADIUM_COLLIDER_CONFIG = {
     radialSegments: 16,
     pos: { x: 49, y: 40, z: 19 }
 };
+
+export const MAP_WORLD_SIZE = 800;

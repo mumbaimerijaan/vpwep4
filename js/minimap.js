@@ -1,13 +1,10 @@
 import * as THREE from 'three';
 import { basePosition } from './animation.js';
 import { gsap } from 'gsap';
+import { MAP_WORLD_SIZE } from './config.js'; 
 
 let container, dot;
 let isDragging = false;
-
-// We need a mapping range. 
-// If stadium world size is roughly 800x800 units, the minimap represents that.
-const MAP_WORLD_SIZE = 800; 
 
 export function initMinimap() {
     container = document.getElementById('mini-map');
@@ -93,3 +90,11 @@ function setupDragLogic() {
         });
     }
 }
+
+// Toggle minimap container natively upon view change
+window.addEventListener('view-changed', (e) => {
+    const minimapContainer = document.querySelector('.mini-map-container');
+    if (minimapContainer) {
+        minimapContainer.classList.toggle('hidden', e.detail !== 'landing');
+    }
+});

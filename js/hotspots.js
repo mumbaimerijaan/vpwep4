@@ -45,8 +45,9 @@ export function setupHotspots(scene, camera, container) {
                                    .replace('var(--accent-purple)', '#b794f4')
                                    .replace('var(--accent-red)', '#fc8181');
 
-        const el = document.createElement('div');
+        const el = document.createElement('button');
         el.className = 'hotspot-beacon';
+        el.setAttribute('aria-label', `View details for ${data.title}`);
         el.style.setProperty('--beacon-color', rawColor);
         el.innerHTML = `
             <div class="dot">
@@ -213,3 +214,11 @@ export function updateHotspots(customCamera) {
         }
     });
 }
+
+// Toggle hotspots container natively upon view change
+window.addEventListener('view-changed', (e) => {
+    const hotspotsContainer = document.getElementById('hotspots-container');
+    if (hotspotsContainer) {
+        hotspotsContainer.classList.toggle('hidden', e.detail !== 'landing');
+    }
+});

@@ -23,6 +23,13 @@ export function initDashboard() {
     if (dashboardView) {
         observer.observe(dashboardView, { attributes: true });
     }
+
+    // Toggle panel visibility natively upon view change
+    window.addEventListener('view-changed', (e) => {
+        if (dashboardView) {
+            dashboardView.classList.toggle('hidden', e.detail !== 'dashboard');
+        }
+    });
 }
 
 // 1. Setup Left Sidebar Tab Clicking
@@ -164,7 +171,18 @@ function setupCopilotActions() {
             // 4. Update AI Copilot Situation text description
             const sitDesc = document.getElementById('sit-desc');
             if (sitDesc) {
-                sitDesc.innerHTML = "Crowd density near Gate A normalized (Recommendation Applied).<br>Metro inflow managed successfully.<br>Overall venue remains operational.";
+                sitDesc.textContent = '';
+                const lines = [
+                    "Crowd density near Gate A normalized (Recommendation Applied).",
+                    "Metro inflow managed successfully.",
+                    "Overall venue remains operational."
+                ];
+                lines.forEach((lineText, idx) => {
+                    sitDesc.appendChild(document.createTextNode(lineText));
+                    if (idx < lines.length - 1) {
+                        sitDesc.appendChild(document.createElement('br'));
+                    }
+                });
             }
             
             // 5. Update timeline status nodes

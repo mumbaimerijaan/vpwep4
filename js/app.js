@@ -42,32 +42,29 @@ async function init() {
     // Switch between Landing Page and Operations Dashboard
     const btnHome = document.getElementById('dock-home');
     const btnOperations = document.getElementById('dock-operations');
-    const dashboardView = document.getElementById('dashboard-view');
-    const hotspotsContainer = document.getElementById('hotspots-container');
-    const minimapContainer = document.querySelector('.mini-map-container');
     const infoCard = document.getElementById('info-card');
     const btnReturn = document.getElementById('btn-return');
 
     function showDashboard() {
-        dashboardView.classList.remove('hidden');
-        hotspotsContainer.classList.add('hidden');
-        minimapContainer.classList.add('hidden');
-        infoCard.classList.add('hidden');
-        btnReturn.classList.add('hidden');
-        
-        document.querySelectorAll('.dock-item').forEach(item => item.classList.remove('active'));
-        if (btnOperations) btnOperations.classList.add('active');
+        window.dispatchEvent(new CustomEvent('view-changed', { detail: 'dashboard' }));
     }
 
     function showLandingPage() {
-        dashboardView.classList.add('hidden');
-        hotspotsContainer.classList.remove('hidden');
-        minimapContainer.classList.remove('hidden');
-        resetCamera();
-        
-        document.querySelectorAll('.dock-item').forEach(item => item.classList.remove('active'));
-        if (btnHome) btnHome.classList.add('active');
+        window.dispatchEvent(new CustomEvent('view-changed', { detail: 'landing' }));
     }
+
+    // Natively update app-specific layout states based on event
+    window.addEventListener('view-changed', (e) => {
+        document.querySelectorAll('.dock-item').forEach(item => item.classList.remove('active'));
+        if (e.detail === 'dashboard') {
+            if (btnOperations) btnOperations.classList.add('active');
+            if (infoCard) infoCard.classList.add('hidden');
+            if (btnReturn) btnReturn.classList.add('hidden');
+        } else {
+            if (btnHome) btnHome.classList.add('active');
+            resetCamera();
+        }
+    });
 
     if (btnHome) btnHome.addEventListener('click', showLandingPage);
     if (btnOperations) btnOperations.addEventListener('click', showDashboard);
@@ -119,14 +116,20 @@ async function init() {
         }
     }
 
+    // Helper to safely parse numbers with defaults
+    const parseSafe = (val, def = 0) => {
+        const parsed = parseFloat(val);
+        return isNaN(parsed) ? def : parsed;
+    };
+
     [cx, cy, cz, tx, ty, tz, zoom].forEach(input => {
         input.addEventListener('input', () => {
             gsap.killTweensOf(basePosition);
             gsap.killTweensOf(lookAtTarget);
             gsap.killTweensOf(camera);
-            basePosition.set(parseFloat(cx.value), parseFloat(cy.value), parseFloat(cz.value));
-            lookAtTarget.set(parseFloat(tx.value), parseFloat(ty.value), parseFloat(tz.value));
-            camera.zoom = parseFloat(zoom.value) || 1;
+            basePosition.set(parseSafe(cx.value, 0), parseSafe(cy.value, 0), parseSafe(cz.value, 0));
+            lookAtTarget.set(parseSafe(tx.value, 0), parseSafe(ty.value, 0), parseSafe(tz.value, 0));
+            camera.zoom = parseSafe(zoom.value, 1);
             camera.updateProjectionMatrix();
             updateDebugOutput();
         });
@@ -135,9 +138,9 @@ async function init() {
     [mx, my, mz, rx, ry, rz, mscale].forEach(input => {
         input.addEventListener('input', () => {
             if (!stadiumModel) return;
-            stadiumModel.position.set(parseFloat(mx.value), parseFloat(my.value), parseFloat(mz.value));
-            stadiumModel.rotation.set(parseFloat(rx.value), parseFloat(ry.value), parseFloat(rz.value));
-            const s = parseFloat(mscale.value) || 1;
+            stadiumModel.position.set(parseSafe(mx.value, 0), parseSafe(my.value, 0), parseSafe(mz.value, 0));
+            stadiumModel.rotation.set(parseSafe(rx.value, 0), parseSafe(ry.value, 0), parseSafe(rz.value, 0));
+            const s = parseSafe(mscale.value, 1);
             stadiumModel.scale.set(s, s, s);
             updateDebugOutput();
         });

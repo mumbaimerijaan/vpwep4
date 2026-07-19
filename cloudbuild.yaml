@@ -6,7 +6,6 @@ steps:
       - '-m'
       - 'rsync'
       - '-r'
-      - '-d'
       - '.'
       - 'gs://vpwc4bucket'
 

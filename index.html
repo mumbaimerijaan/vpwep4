@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stadium Digital Twin - Premium Edition</title>
-    
+
     <!-- Using Inter as a close approximation to SF Pro for web -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <script type="importmap">
     {
       "imports": {
@@ -15,7 +16,7 @@
         "three/examples/jsm/": "./node_modules/three/examples/jsm/",
         "gsap": "./node_modules/gsap/index.js"
       }
-    }
+    } 
     </script>
 
     <link rel="stylesheet" href="css/base.css?v=4">
@@ -23,16 +24,19 @@
     <link rel="stylesheet" href="css/ui.css?v=4">
     <link rel="stylesheet" href="css/animations.css?v=4">
 </head>
+
 <body>
     <div id="canvas-container"></div>
     <div class="vignette"></div>
-    
+
     <!-- Hotspot Container for 3D tracking -->
-    <div id="hotspots-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; overflow: hidden;"></div>
+    <div id="hotspots-container"
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; overflow: hidden;">
+    </div>
 
     <!-- UI Overlay Layer (Pointer events mostly none except for interactive elements) -->
     <div class="ui-overlay">
-        
+
         <!-- Top Floating Glass Bar -->
         <header class="top-bar glass-panel">
             <div class="logo-area">
@@ -42,30 +46,45 @@
                     <span class="op-text">OPERATIONS CENTER</span>
                 </div>
             </div>
-            
+
             <div class="status-items">
                 <div class="status-item">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--accent-orange)" stroke-width="2" fill="none"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path><circle cx="12" cy="12" r="4"></circle></svg>
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--accent-orange)" stroke-width="2"
+                        fill="none">
+                        <path
+                            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41">
+                        </path>
+                        <circle cx="12" cy="12" r="4"></circle>
+                    </svg>
                     <div class="status-col">
                         <span class="status-val" id="weather-val">32°C</span>
                         <span class="status-lbl">Weather</span>
                     </div>
                 </div>
-                
+
                 <div class="status-divider"></div>
-                
+
                 <div class="status-item">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
                     <div class="status-col">
                         <span class="status-val" id="attendance-val">38,456</span>
                         <span class="status-lbl">Attendance</span>
                     </div>
                 </div>
-                
+
                 <div class="status-divider"></div>
 
                 <div class="status-item">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="3" y1="9" x2="21" y2="9"></line>
+                        <line x1="9" y1="21" x2="9" y2="9"></line>
+                    </svg>
                     <div class="status-col">
                         <span class="status-val" id="capacity-val">40,000</span>
                         <span class="status-lbl">Capacity</span>
@@ -75,7 +94,15 @@
                 <div class="status-divider"></div>
 
                 <div class="status-item">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--accent-blue)" stroke-width="2" fill="none"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--accent-blue)" stroke-width="2"
+                        fill="none">
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
                     <div class="status-col">
                         <span class="status-val">Normal</span>
                         <span class="status-lbl">Queue Status</span>
@@ -85,17 +112,24 @@
                 <div class="status-divider"></div>
 
                 <div class="status-item">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--accent-green)" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--accent-green)" stroke-width="2"
+                        fill="none">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
                     <div class="status-col">
                         <span class="status-val">Clear</span>
                         <span class="status-lbl">Emergency</span>
                     </div>
                 </div>
-                
+
                 <div class="status-divider"></div>
-                
+
                 <div class="status-item">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
                     <div class="status-col">
                         <span class="status-val" id="local-time-val">19:45</span>
                         <span class="status-lbl">Local Time</span>
@@ -107,87 +141,142 @@
         <!-- Top Right Actions -->
         <div class="top-right-actions">
             <button class="icon-btn glass-btn" aria-label="Notifications" id="btn-notifications">
-                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
                 <span class="badge" id="notifications-badge">3</span>
             </button>
             <button class="icon-btn glass-btn help-btn" aria-label="Operations">
-                Venue: Al Janoub Stadium <span class="live-pulse" style="color: #ff3b30; font-weight: 800; letter-spacing: 1px;"><div class="dot-red" style="background: #ff3b30; box-shadow: none;"></div> LIVE</span>
+                Venue: Al Janoub Stadium <span class="live-pulse"
+                    style="color: #ff3b30; font-weight: 800; letter-spacing: 1px;">
+                    <div class="dot-red" style="background: #ff3b30; box-shadow: none;"></div> LIVE
+                </span>
             </button>
             <button class="icon-btn glass-btn" aria-label="Fullscreen" id="btn-fullscreen">
-                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                    <path
+                        d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3">
+                    </path>
+                </svg>
             </button>
         </div>
 
         <!-- Left Contextual Info Card (Hidden until hotspot click) -->
         <div id="info-card" class="glass-panel slide-in-left hidden">
             <!-- Left Column: Details -->
-            <div class="card-details" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+            <div class="card-details"
+                style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
                 <div class="card-header">
                     <div>
                         <h2 id="card-title">GATE A – MAIN ENTRANCE</h2>
-                        <span id="card-status-pill" class="status-pill status-operational"><span class="dot"></span> <span id="card-status-text">OPERATIONAL</span></span>
+                        <span id="card-status-pill" class="status-pill status-operational"><span class="dot"></span>
+                            <span id="card-status-text">OPERATIONAL</span></span>
                     </div>
                     <button id="card-close" class="icon-btn subtle-btn" aria-label="Close details">
-                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                            fill="none">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
                     </button>
                 </div>
-                
-                <div class="card-stats" style="margin-top: 16px; display: flex; flex-direction: column; gap: 14px; flex-grow: 1;">
+
+                <div class="card-stats"
+                    style="margin-top: 16px; display: flex; flex-direction: column; gap: 14px; flex-grow: 1;">
                     <div class="stat-row">
-                        <div class="stat-icon"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                        <div class="stat-icon"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor"
+                                stroke-width="2" fill="none">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg></div>
                         <div class="stat-info">
                             <span class="stat-lbl">Occupancy</span>
                             <div class="progress-bar-container">
                                 <span class="stat-val" id="card-occupancy">78%</span>
-                                <div class="progress-track"><div class="progress-fill" style="width: 78%;" id="card-occupancy-bar"></div></div>
+                                <div class="progress-track">
+                                    <div class="progress-fill" style="width: 78%;" id="card-occupancy-bar"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="stat-row">
-                        <div class="stat-icon"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                        <div class="stat-icon"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor"
+                                stroke-width="2" fill="none">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg></div>
                         <div class="stat-info">
                             <span class="stat-lbl">Queue Length</span>
-                            <span class="stat-val"><span id="card-queue">240</span> <span class="stat-unit">people</span></span>
+                            <span class="stat-val"><span id="card-queue">240</span> <span
+                                    class="stat-unit">people</span></span>
                         </div>
                     </div>
-                    
+
                     <div class="stat-row">
-                        <div class="stat-icon"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                        <div class="stat-icon"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor"
+                                stroke-width="2" fill="none">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg></div>
                         <div class="stat-info">
                             <span class="stat-lbl">Average Wait Time</span>
-                            <span class="stat-val"><span id="card-wait">18</span> <span class="stat-unit">min</span></span>
+                            <span class="stat-val"><span id="card-wait">18</span> <span
+                                    class="stat-unit">min</span></span>
                         </div>
                     </div>
-                    
+
                     <div class="stat-row">
-                        <div class="stat-icon stat-success"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+                        <div class="stat-icon stat-success"><svg viewBox="0 0 24 24" width="20" height="20"
+                                stroke="currentColor" stroke-width="2" fill="none">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg></div>
                         <div class="stat-info">
                             <span class="stat-lbl">Status</span>
                             <span class="stat-val color-success" id="card-recommendation">Normal</span>
                         </div>
                     </div>
                 </div>
-                
+
                 <button class="glass-btn primary-btn mt-4" style="width: 100%;">
-                    View Details <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    View Details <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                        fill="none">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
                 </button>
             </div>
-            
+
             <!-- Right Column: Location Image -->
-            <div class="card-image-container" style="width: 100%; height: 100%; border-radius: 12px; overflow: hidden; position: relative;">
-                <img id="card-location-image" src="assets/images/locations/vip_lounge.png" alt="Location View" style="width: 100%; height: 100%; object-fit: cover; min-height: 280px; display: block; border-radius: 12px;">
+            <div class="card-image-container"
+                style="width: 100%; height: 100%; border-radius: 12px; overflow: hidden; position: relative;">
+                <img id="card-location-image" src="assets/images/locations/vip_lounge.png" alt="Location View"
+                    style="width: 100%; height: 100%; object-fit: cover; min-height: 280px; display: block; border-radius: 12px;">
             </div>
         </div>
 
         <!-- Bottom Center Apple-style Dock -->
         <nav class="bottom-dock glass-panel">
             <button class="dock-item active" id="dock-home" aria-label="Navigate to Home screen">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
                 <span>HOME</span>
             </button>
             <button class="dock-item" id="dock-operations" aria-label="Navigate to Operations Dashboard">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51 1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path
+                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51 1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                    </path>
+                </svg>
                 <span>OPERATIONS</span>
             </button>
         </nav>
@@ -195,7 +284,7 @@
         <!-- Operations Dashboard View Overlay -->
         <div id="dashboard-view" class="dashboard-view hidden">
             <div class="dashboard-grid">
-                
+
                 <!-- LEFT COLUMN: Navigation Sidebar & Current Incidents -->
                 <div class="db-left-col">
                     <!-- Sidebar Navigation Card -->
@@ -205,35 +294,69 @@
                         </div>
                         <nav class="sidebar-menu">
                             <button class="sidebar-item active" data-tab="overview">
-                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                                    fill="none">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
                                 <span>Overview</span>
                             </button>
                             <button class="sidebar-item" data-tab="crowd">
-                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                                    fill="none">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path
+                                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                                    </path>
+                                </svg>
                                 <span>Crowd Intelligence</span>
                             </button>
                             <button class="sidebar-item" data-tab="transport">
-                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><path d="M4 16c4 0 8-4 8-8"></path><path d="M12 20c0-4 4-8 8-8"></path></svg>
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                                    fill="none">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                    <path d="M4 16c4 0 8-4 8-8"></path>
+                                    <path d="M12 20c0-4 4-8 8-8"></path>
+                                </svg>
                                 <span>Transport</span>
                             </button>
                             <button class="sidebar-item" data-tab="security">
-                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                                    fill="none">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
                                 <span>Security</span>
                             </button>
                             <button class="sidebar-item" data-tab="medical">
-                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                                    fill="none">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                </svg>
                                 <span>Medical</span>
                             </button>
                             <button class="sidebar-item" data-tab="sustainability">
-                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                                    fill="none">
+                                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
                                 <span>Sustainability</span>
                             </button>
                             <button class="sidebar-item" data-tab="communications">
-                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                                    fill="none">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
                                 <span>Communications</span>
                             </button>
                             <button class="sidebar-item" data-tab="reports">
-                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                                    fill="none">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
                                 <span>Reports</span>
                             </button>
                         </nav>
@@ -248,7 +371,14 @@
                         <div class="incidents-sidebar-list" id="sidebar-incident-list">
                             <div class="sidebar-inc-item priority-high" id="inc-1">
                                 <div class="inc-icon-circle color-red">
-                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor"
+                                        stroke-width="2.5" fill="none">
+                                        <path
+                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                                        </path>
+                                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                    </svg>
                                 </div>
                                 <div class="inc-info-mid">
                                     <span class="inc-title-text">High Density at Gate A</span>
@@ -259,7 +389,12 @@
 
                             <div class="sidebar-inc-item priority-medium" id="inc-2">
                                 <div class="inc-icon-circle color-orange">
-                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.5" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor"
+                                        stroke-width="2.5" fill="none">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                    </svg>
                                 </div>
                                 <div class="inc-info-mid">
                                     <span class="inc-title-text">Metro Inflow Surge</span>
@@ -270,7 +405,10 @@
 
                             <div class="sidebar-inc-item priority-low" id="inc-3">
                                 <div class="inc-icon-circle color-green">
-                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor"
+                                        stroke-width="2.5" fill="none">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
                                 </div>
                                 <div class="inc-info-mid">
                                     <span class="inc-title-text">Food Court Queue Normalized</span>
@@ -287,61 +425,93 @@
                     <div class="center-upper-split">
                         <!-- Center Upper Left Panel Switcher Container -->
                         <div class="db-panel-switcher">
-                            
+
                             <!-- Panel 1: Overview (Default Active) -->
                             <div class="db-panel glass-panel active" id="panel-overview">
                                 <div class="intel-header-row">
                                     <div class="intel-title-tag">
                                         <h3>Venue Operations Overview</h3>
-                                        <span class="live-status-badge" style="background:rgba(52,199,89,0.15); color:var(--accent-green); border:1px solid rgba(52,199,89,0.25);"><span class="dot-live"></span> OPERATIONAL</span>
+                                        <span class="live-status-badge"
+                                            style="background:rgba(52,199,89,0.15); color:var(--accent-green); border:1px solid rgba(52,199,89,0.25);"><span
+                                                class="dot-live"></span> OPERATIONAL</span>
                                     </div>
                                     <div class="intel-actions-row">
                                         <button class="intel-act-btn">
-                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path></svg>
+                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
+                                                stroke-width="2" fill="none">
+                                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path>
+                                            </svg>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="heatmap-body-container" style="display:flex; gap:16px; align-items:stretch; padding:10px;">
-                                    <div style="flex:1.2; position:relative; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.2); border-radius:8px;">
-                                        <svg viewBox="0 0 200 200" style="width:90%; height:90%;" stroke="rgba(0,122,255,0.4)" stroke-width="1.2" fill="none">
+                                <div class="heatmap-body-container"
+                                    style="display:flex; gap:16px; align-items:stretch; padding:10px;">
+                                    <div
+                                        style="flex:1.2; position:relative; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.2); border-radius:8px;">
+                                        <svg viewBox="0 0 200 200" style="width:90%; height:90%;"
+                                            stroke="rgba(0,122,255,0.4)" stroke-width="1.2" fill="none">
                                             <ellipse cx="100" cy="100" rx="80" ry="60" />
                                             <ellipse cx="100" cy="100" rx="60" ry="40" />
                                             <ellipse cx="100" cy="100" rx="35" ry="20" />
-                                            <line x1="100" y1="20" x2="100" y2="40" stroke="rgba(255,255,255,0.2)"/>
-                                            <line x1="100" y1="160" x2="100" y2="180" stroke="rgba(255,255,255,0.2)"/>
-                                            <line x1="20" y1="100" x2="40" y2="100" stroke="rgba(255,255,255,0.2)"/>
-                                            <line x1="160" y1="100" x2="180" y2="100" stroke="rgba(255,255,255,0.2)"/>
+                                            <line x1="100" y1="20" x2="100" y2="40" stroke="rgba(255,255,255,0.2)" />
+                                            <line x1="100" y1="160" x2="100" y2="180" stroke="rgba(255,255,255,0.2)" />
+                                            <line x1="20" y1="100" x2="40" y2="100" stroke="rgba(255,255,255,0.2)" />
+                                            <line x1="160" y1="100" x2="180" y2="100" stroke="rgba(255,255,255,0.2)" />
                                             <circle cx="100" cy="40" r="4" fill="var(--accent-green)" />
                                             <circle cx="100" cy="160" r="4" fill="var(--accent-green)" />
                                             <circle cx="40" cy="100" r="4" fill="var(--accent-blue)" />
                                             <circle cx="160" cy="100" r="4" fill="#ff9500" />
                                         </svg>
-                                        <span class="map-label-pill pill-green" style="top:12%; left:42%; padding:2px 6px !important;"><span class="lbl-title" style="font-size:7.5px;">Gate A</span></span>
-                                        <span class="map-label-pill pill-green" style="bottom:12%; left:42%; padding:2px 6px !important;"><span class="lbl-title" style="font-size:7.5px;">Gate C</span></span>
-                                        <span class="map-label-pill pill-blue" style="top:44%; left:8%; padding:2px 6px !important;"><span class="lbl-title" style="font-size:7.5px;">Metro In</span></span>
-                                        <span class="map-label-pill pill-yellow" style="top:44%; right:8%; padding:2px 6px !important;"><span class="lbl-title" style="font-size:7.5px;">Gate B</span></span>
+                                        <span class="map-label-pill pill-green"
+                                            style="top:12%; left:42%; padding:2px 6px !important;"><span
+                                                class="lbl-title" style="font-size:7.5px;">Gate A</span></span>
+                                        <span class="map-label-pill pill-green"
+                                            style="bottom:12%; left:42%; padding:2px 6px !important;"><span
+                                                class="lbl-title" style="font-size:7.5px;">Gate C</span></span>
+                                        <span class="map-label-pill pill-blue"
+                                            style="top:44%; left:8%; padding:2px 6px !important;"><span
+                                                class="lbl-title" style="font-size:7.5px;">Metro In</span></span>
+                                        <span class="map-label-pill pill-yellow"
+                                            style="top:44%; right:8%; padding:2px 6px !important;"><span
+                                                class="lbl-title" style="font-size:7.5px;">Gate B</span></span>
                                     </div>
-                                    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px; padding-left:4px;">
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Overall Safety</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:var(--accent-green);">98% Optimal</span>
+                                    <div
+                                        style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px; padding-left:4px;">
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Overall
+                                                Safety</span>
+                                            <span
+                                                style="font-size:10.5px; font-weight:700; color:var(--accent-green);">98%
+                                                Optimal</span>
                                         </div>
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Turnstile Flow</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:#ffffff;">384 fans/m</span>
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Turnstile
+                                                Flow</span>
+                                            <span style="font-size:10.5px; font-weight:700; color:#ffffff;">384
+                                                fans/m</span>
                                         </div>
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Active Alerts</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:var(--accent-orange);">1 Alert</span>
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Active
+                                                Alerts</span>
+                                            <span
+                                                style="font-size:10.5px; font-weight:700; color:var(--accent-orange);">1
+                                                Alert</span>
                                         </div>
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Staff Status</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:var(--accent-green);">98.2% Active</span>
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Staff
+                                                Status</span>
+                                            <span
+                                                style="font-size:10.5px; font-weight:700; color:var(--accent-green);">98.2%
+                                                Active</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Panel 2: Crowd Intelligence -->
                             <div class="db-panel glass-panel" id="panel-crowd">
                                 <div class="intel-header-row">
@@ -351,32 +521,52 @@
                                     </div>
                                     <div class="intel-actions-row">
                                         <button class="intel-act-btn">
-                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path></svg>
+                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
+                                                stroke-width="2" fill="none">
+                                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path>
+                                            </svg>
                                         </button>
                                         <button class="intel-act-btn">
-                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
+                                                stroke-width="2" fill="none">
+                                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="9" y1="3" x2="9" y2="21"></line>
+                                                <line x1="15" y1="3" x2="15" y2="21"></line>
+                                            </svg>
                                         </button>
                                     </div>
                                 </div>
-                                
+
                                 <div class="heatmap-body-container">
-                                    <img src="assets/images/stadium_topdown.png" alt="Stadium Topdown View" class="stadium-topdown-img-twin">
-                                    
+                                    <img src="assets/images/stadium_topdown.png" alt="Stadium Topdown View"
+                                        class="stadium-topdown-img-twin">
+
                                     <!-- Heatmap Blobs Overlay -->
                                     <div class="heatmap-overlay-twin">
                                         <!-- Gate A (Red Hotspot) -->
-                                        <div class="heatmap-blob-twin blob-red-twin" style="top: 40%; left: 63%; width: 150px; height: 150px;" id="blob-gate-a"></div>
+                                        <div class="heatmap-blob-twin blob-red-twin"
+                                            style="top: 40%; left: 63%; width: 150px; height: 150px;" id="blob-gate-a">
+                                        </div>
                                         <!-- Parking / Gate B (Yellow/Orange) -->
-                                        <div class="heatmap-blob-twin blob-yellow-twin" style="top: 36%; left: 45%; width: 130px; height: 130px;" id="blob-parking"></div>
+                                        <div class="heatmap-blob-twin blob-yellow-twin"
+                                            style="top: 36%; left: 45%; width: 130px; height: 130px;" id="blob-parking">
+                                        </div>
                                         <!-- Metro (Blue/Cyan Inflow) -->
-                                        <div class="heatmap-blob-twin blob-blue-twin" style="top: 36%; left: 26%; width: 140px; height: 140px;" id="blob-metro"></div>
+                                        <div class="heatmap-blob-twin blob-blue-twin"
+                                            style="top: 36%; left: 26%; width: 140px; height: 140px;" id="blob-metro">
+                                        </div>
                                         <!-- Food Court (Green) -->
-                                        <div class="heatmap-blob-twin blob-green-twin" style="top: 58%; left: 64%; width: 120px; height: 120px;" id="blob-fnb"></div>
+                                        <div class="heatmap-blob-twin blob-green-twin"
+                                            style="top: 58%; left: 64%; width: 120px; height: 120px;" id="blob-fnb">
+                                        </div>
                                     </div>
 
                                     <!-- Floating Map Markers -->
                                     <div class="map-label-pill pill-blue" style="top: 34%; left: 25%;" id="pill-metro">
-                                        <div class="lbl-icon"><svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect></svg></div>
+                                        <div class="lbl-icon"><svg viewBox="0 0 24 24" width="10" height="10"
+                                                stroke="currentColor" stroke-width="2" fill="none">
+                                                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                            </svg></div>
                                         <div class="lbl-texts">
                                             <span class="lbl-title">Metro</span>
                                             <span class="lbl-desc" id="status-text-metro">Incoming</span>
@@ -384,7 +574,10 @@
                                     </div>
 
                                     <div class="map-label-pill pill-yellow" style="top: 33%; left: 44%;">
-                                        <div class="lbl-icon"><svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle></svg></div>
+                                        <div class="lbl-icon"><svg viewBox="0 0 24 24" width="10" height="10"
+                                                stroke="currentColor" stroke-width="2" fill="none">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                            </svg></div>
                                         <div class="lbl-texts">
                                             <span class="lbl-title">Gate B</span>
                                             <span class="lbl-desc">Moderate</span>
@@ -392,7 +585,12 @@
                                     </div>
 
                                     <div class="map-label-pill pill-red" style="top: 39%; left: 61%;" id="pill-gate-a">
-                                        <div class="lbl-icon"><svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" fill="none"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon></svg></div>
+                                        <div class="lbl-icon"><svg viewBox="0 0 24 24" width="10" height="10"
+                                                stroke="currentColor" stroke-width="2" fill="none">
+                                                <polygon
+                                                    points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2">
+                                                </polygon>
+                                            </svg></div>
                                         <div class="lbl-texts">
                                             <span class="lbl-title">Gate A</span>
                                             <span class="lbl-desc" id="status-text-gate-a">High Density</span>
@@ -400,7 +598,11 @@
                                     </div>
 
                                     <div class="map-label-pill pill-green" style="top: 57%; left: 62%;" id="pill-fnb">
-                                        <div class="lbl-icon"><svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+                                        <div class="lbl-icon"><svg viewBox="0 0 24 24" width="10" height="10"
+                                                stroke="currentColor" stroke-width="2" fill="none">
+                                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6">
+                                                </path>
+                                            </svg></div>
                                         <div class="lbl-texts">
                                             <span class="lbl-title">Food Court</span>
                                             <span class="lbl-desc" id="status-text-fnb">Normal</span>
@@ -421,49 +623,87 @@
                                 <div class="intel-header-row">
                                     <div class="intel-title-tag">
                                         <h3>Transit Access & Flow</h3>
-                                        <span class="live-status-badge" style="background:rgba(0,122,255,0.15); color:var(--accent-blue); border:1px solid rgba(0,122,255,0.25);"><span class="dot-live" style="background:var(--accent-blue);"></span> MONITORING</span>
+                                        <span class="live-status-badge"
+                                            style="background:rgba(0,122,255,0.15); color:var(--accent-blue); border:1px solid rgba(0,122,255,0.25);"><span
+                                                class="dot-live" style="background:var(--accent-blue);"></span>
+                                            MONITORING</span>
                                     </div>
                                     <div class="intel-actions-row">
                                         <button class="intel-act-btn">
-                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
+                                                stroke-width="2" fill="none">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                                            </svg>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="heatmap-body-container" style="display:flex; gap:16px; align-items:stretch; padding:10px;">
-                                    <div style="flex:1.2; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.2); border-radius:8px; position:relative;">
-                                        <svg viewBox="0 0 200 200" style="width:90%; height:90%;" stroke="var(--accent-blue)" stroke-width="1.5" fill="none">
+                                <div class="heatmap-body-container"
+                                    style="display:flex; gap:16px; align-items:stretch; padding:10px;">
+                                    <div
+                                        style="flex:1.2; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.2); border-radius:8px; position:relative;">
+                                        <svg viewBox="0 0 200 200" style="width:90%; height:90%;"
+                                            stroke="var(--accent-blue)" stroke-width="1.5" fill="none">
                                             <!-- Metro Line track design -->
-                                            <path d="M 20,40 C 60,40 60,160 100,160 C 140,160 140,40 180,40" stroke-dasharray="4,4" />
+                                            <path d="M 20,40 C 60,40 60,160 100,160 C 140,160 140,40 180,40"
+                                                stroke-dasharray="4,4" />
                                             <!-- Bus loop track -->
-                                            <rect x="50" y="70" width="100" height="60" rx="30" stroke="rgba(255,255,255,0.15)" stroke-width="1.2"/>
+                                            <rect x="50" y="70" width="100" height="60" rx="30"
+                                                stroke="rgba(255,255,255,0.15)" stroke-width="1.2" />
                                             <!-- Nodes -->
                                             <circle cx="100" cy="160" r="6" fill="var(--accent-blue)" />
                                             <circle cx="100" cy="70" r="5" fill="var(--accent-green)" />
                                             <circle cx="150" cy="100" r="5" fill="var(--accent-green)" />
                                         </svg>
-                                        <span class="map-label-pill pill-blue" style="bottom:12%; left:36%; padding:2px 6px !important;"><span class="lbl-title" style="font-size:7.5px;">Metro Station</span></span>
-                                        <span class="map-label-pill pill-green" style="top:22%; left:36%; padding:2px 6px !important;"><span class="lbl-title" style="font-size:7.5px;">Bus Hub</span></span>
+                                        <span class="map-label-pill pill-blue"
+                                            style="bottom:12%; left:36%; padding:2px 6px !important;"><span
+                                                class="lbl-title" style="font-size:7.5px;">Metro Station</span></span>
+                                        <span class="map-label-pill pill-green"
+                                            style="top:22%; left:36%; padding:2px 6px !important;"><span
+                                                class="lbl-title" style="font-size:7.5px;">Bus Hub</span></span>
                                     </div>
-                                    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:6px; padding-left:4px;">
-                                        <div style="display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:6px; border-radius:6px;">
-                                            <span style="font-size:8.5px; color:rgba(255,255,255,0.45); text-transform:uppercase;">Metro Inflow</span>
-                                            <span style="font-size:11px; font-weight:700; color:#ffffff;">1,150 / 10m</span>
-                                            <div style="width:100%; height:3px; background:rgba(255,255,255,0.1); border-radius:1.5px; margin-top:3px; overflow:hidden;">
-                                                <div style="width:72%; height:100%; background:var(--accent-blue);"></div>
+                                    <div
+                                        style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:6px; padding-left:4px;">
+                                        <div
+                                            style="display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:6px; border-radius:6px;">
+                                            <span
+                                                style="font-size:8.5px; color:rgba(255,255,255,0.45); text-transform:uppercase;">Metro
+                                                Inflow</span>
+                                            <span style="font-size:11px; font-weight:700; color:#ffffff;">1,150 /
+                                                10m</span>
+                                            <div
+                                                style="width:100%; height:3px; background:rgba(255,255,255,0.1); border-radius:1.5px; margin-top:3px; overflow:hidden;">
+                                                <div style="width:72%; height:100%; background:var(--accent-blue);">
+                                                </div>
                                             </div>
                                         </div>
-                                        <div style="display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:6px; border-radius:6px;">
-                                            <span style="font-size:8.5px; color:rgba(255,255,255,0.45); text-transform:uppercase;">Park & Ride A</span>
-                                            <span style="font-size:11px; font-weight:700; color:var(--accent-orange);">91% Capacity</span>
-                                            <div style="width:100%; height:3px; background:rgba(255,255,255,0.1); border-radius:1.5px; margin-top:3px; overflow:hidden;">
-                                                <div style="width:91%; height:100%; background:var(--accent-orange);"></div>
+                                        <div
+                                            style="display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:6px; border-radius:6px;">
+                                            <span
+                                                style="font-size:8.5px; color:rgba(255,255,255,0.45); text-transform:uppercase;">Park
+                                                & Ride A</span>
+                                            <span
+                                                style="font-size:11px; font-weight:700; color:var(--accent-orange);">91%
+                                                Capacity</span>
+                                            <div
+                                                style="width:100%; height:3px; background:rgba(255,255,255,0.1); border-radius:1.5px; margin-top:3px; overflow:hidden;">
+                                                <div style="width:91%; height:100%; background:var(--accent-orange);">
+                                                </div>
                                             </div>
                                         </div>
-                                        <div style="display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:6px; border-radius:6px;">
-                                            <span style="font-size:8.5px; color:rgba(255,255,255,0.45); text-transform:uppercase;">Park & Ride B</span>
-                                            <span style="font-size:11px; font-weight:700; color:var(--accent-green);">48% Capacity</span>
-                                            <div style="width:100%; height:3px; background:rgba(255,255,255,0.1); border-radius:1.5px; margin-top:3px; overflow:hidden;">
-                                                <div style="width:48%; height:100%; background:var(--accent-green);"></div>
+                                        <div
+                                            style="display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:6px; border-radius:6px;">
+                                            <span
+                                                style="font-size:8.5px; color:rgba(255,255,255,0.45); text-transform:uppercase;">Park
+                                                & Ride B</span>
+                                            <span
+                                                style="font-size:11px; font-weight:700; color:var(--accent-green);">48%
+                                                Capacity</span>
+                                            <div
+                                                style="width:100%; height:3px; background:rgba(255,255,255,0.1); border-radius:1.5px; margin-top:3px; overflow:hidden;">
+                                                <div style="width:48%; height:100%; background:var(--accent-green);">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -475,46 +715,89 @@
                                 <div class="intel-header-row">
                                     <div class="intel-title-tag">
                                         <h3>Security Command Console</h3>
-                                        <span class="live-status-badge" style="background:rgba(52,199,89,0.15); color:var(--accent-green); border:1px solid rgba(52,199,89,0.25);"><span class="dot-live"></span> SECURE</span>
+                                        <span class="live-status-badge"
+                                            style="background:rgba(52,199,89,0.15); color:var(--accent-green); border:1px solid rgba(52,199,89,0.25);"><span
+                                                class="dot-live"></span> SECURE</span>
                                     </div>
                                     <div class="intel-actions-row">
                                         <button class="intel-act-btn">
-                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><path d="M9 3v18M15 3v18M3 9h18M3 15h18"></path></svg>
+                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
+                                                stroke-width="2" fill="none">
+                                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                                <path d="M9 3v18M15 3v18M3 9h18M3 15h18"></path>
+                                            </svg>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="heatmap-body-container" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; padding:10px;">
+                                <div class="heatmap-body-container"
+                                    style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; padding:10px;">
                                     <!-- CAM 1 -->
-                                    <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; position:relative;">
-                                        <span style="font-size:7.5px; color:rgba(255,255,255,0.5); text-transform:uppercase;">CAM-01 (Gate A Entry)</span>
+                                    <div
+                                        style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; position:relative;">
+                                        <span
+                                            style="font-size:7.5px; color:rgba(255,255,255,0.5); text-transform:uppercase;">CAM-01
+                                            (Gate A Entry)</span>
                                         <div style="flex:1; display:flex; align-items:center; justify-content:center;">
-                                            <svg viewBox="0 0 40 40" width="30" height="30" stroke="var(--accent-orange)" stroke-width="1.2" fill="none"><circle cx="20" cy="20" r="14"/><path d="M10 20h20M20 10v20"/></svg>
+                                            <svg viewBox="0 0 40 40" width="30" height="30"
+                                                stroke="var(--accent-orange)" stroke-width="1.2" fill="none">
+                                                <circle cx="20" cy="20" r="14" />
+                                                <path d="M10 20h20M20 10v20" />
+                                            </svg>
                                         </div>
-                                        <span style="font-size:7px; font-weight:700; color:var(--accent-orange); align-self:flex-end;">WARNING - HIGH DENSITY</span>
+                                        <span
+                                            style="font-size:7px; font-weight:700; color:var(--accent-orange); align-self:flex-end;">WARNING
+                                            - HIGH DENSITY</span>
                                     </div>
                                     <!-- CAM 2 -->
-                                    <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; position:relative;">
-                                        <span style="font-size:7.5px; color:rgba(255,255,255,0.5); text-transform:uppercase;">CAM-02 (Concourse East)</span>
+                                    <div
+                                        style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; position:relative;">
+                                        <span
+                                            style="font-size:7.5px; color:rgba(255,255,255,0.5); text-transform:uppercase;">CAM-02
+                                            (Concourse East)</span>
                                         <div style="flex:1; display:flex; align-items:center; justify-content:center;">
-                                            <svg viewBox="0 0 40 40" width="30" height="30" stroke="var(--accent-green)" stroke-width="1.2" fill="none"><circle cx="20" cy="20" r="14"/><circle cx="20" cy="20" r="4" fill="var(--accent-green)"/></svg>
+                                            <svg viewBox="0 0 40 40" width="30" height="30" stroke="var(--accent-green)"
+                                                stroke-width="1.2" fill="none">
+                                                <circle cx="20" cy="20" r="14" />
+                                                <circle cx="20" cy="20" r="4" fill="var(--accent-green)" />
+                                            </svg>
                                         </div>
-                                        <span style="font-size:7px; font-weight:700; color:var(--accent-green); align-self:flex-end;">ACTIVE - CLEAR</span>
+                                        <span
+                                            style="font-size:7px; font-weight:700; color:var(--accent-green); align-self:flex-end;">ACTIVE
+                                            - CLEAR</span>
                                     </div>
                                     <!-- CAM 3 -->
-                                    <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; position:relative;">
-                                        <span style="font-size:7.5px; color:rgba(255,255,255,0.5); text-transform:uppercase;">CAM-03 (Player Tunnel)</span>
+                                    <div
+                                        style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; position:relative;">
+                                        <span
+                                            style="font-size:7.5px; color:rgba(255,255,255,0.5); text-transform:uppercase;">CAM-03
+                                            (Player Tunnel)</span>
                                         <div style="flex:1; display:flex; align-items:center; justify-content:center;">
-                                            <svg viewBox="0 0 40 40" width="30" height="30" stroke="var(--accent-green)" stroke-width="1.2" fill="none"><circle cx="20" cy="20" r="14"/><path d="M12 28l16-16M12 12l16 16"/></svg>
+                                            <svg viewBox="0 0 40 40" width="30" height="30" stroke="var(--accent-green)"
+                                                stroke-width="1.2" fill="none">
+                                                <circle cx="20" cy="20" r="14" />
+                                                <path d="M12 28l16-16M12 12l16 16" />
+                                            </svg>
                                         </div>
-                                        <span style="font-size:7px; font-weight:700; color:var(--accent-green); align-self:flex-end;">ACTIVE - SECURE</span>
+                                        <span
+                                            style="font-size:7px; font-weight:700; color:var(--accent-green); align-self:flex-end;">ACTIVE
+                                            - SECURE</span>
                                     </div>
                                     <!-- CAM 4 -->
-                                    <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; position:relative;">
-                                        <span style="font-size:7.5px; color:rgba(255,255,255,0.5); text-transform:uppercase;">CAM-04 (VIP Entrance)</span>
+                                    <div
+                                        style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; position:relative;">
+                                        <span
+                                            style="font-size:7.5px; color:rgba(255,255,255,0.5); text-transform:uppercase;">CAM-04
+                                            (VIP Entrance)</span>
                                         <div style="flex:1; display:flex; align-items:center; justify-content:center;">
-                                            <svg viewBox="0 0 40 40" width="30" height="30" stroke="var(--accent-green)" stroke-width="1.2" fill="none"><circle cx="20" cy="20" r="14"/><rect x="17" y="17" width="6" height="6" rx="1"/></svg>
+                                            <svg viewBox="0 0 40 40" width="30" height="30" stroke="var(--accent-green)"
+                                                stroke-width="1.2" fill="none">
+                                                <circle cx="20" cy="20" r="14" />
+                                                <rect x="17" y="17" width="6" height="6" rx="1" />
+                                            </svg>
                                         </div>
-                                        <span style="font-size:7px; font-weight:700; color:var(--accent-green); align-self:flex-end;">ACTIVE - SECURE</span>
+                                        <span
+                                            style="font-size:7px; font-weight:700; color:var(--accent-green); align-self:flex-end;">ACTIVE
+                                            - SECURE</span>
                                     </div>
                                 </div>
                             </div>
@@ -524,45 +807,77 @@
                                 <div class="intel-header-row">
                                     <div class="intel-title-tag">
                                         <h3>Medical Station & Dispatch</h3>
-                                        <span class="live-status-badge" style="background:rgba(0,122,255,0.15); color:var(--accent-blue); border:1px solid rgba(0,122,255,0.25);"><span class="dot-live" style="background:var(--accent-blue);"></span> MONITORING</span>
+                                        <span class="live-status-badge"
+                                            style="background:rgba(0,122,255,0.15); color:var(--accent-blue); border:1px solid rgba(0,122,255,0.25);"><span
+                                                class="dot-live" style="background:var(--accent-blue);"></span>
+                                            MONITORING</span>
                                     </div>
                                     <div class="intel-actions-row">
                                         <button class="intel-act-btn">
-                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
+                                                stroke-width="2" fill="none">
+                                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6">
+                                                </path>
+                                            </svg>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="heatmap-body-container" style="display:flex; gap:16px; align-items:stretch; padding:10px;">
-                                    <div style="flex:1.2; position:relative; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.2); border-radius:8px;">
-                                        <svg viewBox="0 0 200 200" style="width:90%; height:90%;" stroke="var(--accent-red)" stroke-width="1.5" fill="none">
-                                            <ellipse cx="100" cy="100" rx="80" ry="60" stroke="rgba(255,255,255,0.1)"/>
-                                            <ellipse cx="100" cy="100" rx="60" ry="40" stroke="rgba(255,255,255,0.1)"/>
+                                <div class="heatmap-body-container"
+                                    style="display:flex; gap:16px; align-items:stretch; padding:10px;">
+                                    <div
+                                        style="flex:1.2; position:relative; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.2); border-radius:8px;">
+                                        <svg viewBox="0 0 200 200" style="width:90%; height:90%;"
+                                            stroke="var(--accent-red)" stroke-width="1.5" fill="none">
+                                            <ellipse cx="100" cy="100" rx="80" ry="60" stroke="rgba(255,255,255,0.1)" />
+                                            <ellipse cx="100" cy="100" rx="60" ry="40" stroke="rgba(255,255,255,0.1)" />
                                             <!-- Medical station points -->
-                                            <path d="M 60,95 h 8 v 8 h -8 z" fill="var(--accent-red)"/>
-                                            <path d="M 64,91 v 16 M 56,99 h 16" stroke="var(--accent-red)" stroke-width="2"/>
-                                            
-                                            <path d="M 140,95 h 8 v 8 h -8 z" fill="var(--accent-red)"/>
-                                            <path d="M 144,91 v 16 M 136,99 h 16" stroke="var(--accent-red)" stroke-width="2"/>
+                                            <path d="M 60,95 h 8 v 8 h -8 z" fill="var(--accent-red)" />
+                                            <path d="M 64,91 v 16 M 56,99 h 16" stroke="var(--accent-red)"
+                                                stroke-width="2" />
+
+                                            <path d="M 140,95 h 8 v 8 h -8 z" fill="var(--accent-red)" />
+                                            <path d="M 144,91 v 16 M 136,99 h 16" stroke="var(--accent-red)"
+                                                stroke-width="2" />
                                         </svg>
-                                        <span class="map-label-pill pill-red" style="top:44%; left:8%; padding:2px 6px !important;"><span class="lbl-title" style="font-size:7.5px;">Station East</span></span>
-                                        <span class="map-label-pill pill-red" style="top:44%; right:8%; padding:2px 6px !important;"><span class="lbl-title" style="font-size:7.5px;">Station West</span></span>
+                                        <span class="map-label-pill pill-red"
+                                            style="top:44%; left:8%; padding:2px 6px !important;"><span
+                                                class="lbl-title" style="font-size:7.5px;">Station East</span></span>
+                                        <span class="map-label-pill pill-red"
+                                            style="top:44%; right:8%; padding:2px 6px !important;"><span
+                                                class="lbl-title" style="font-size:7.5px;">Station West</span></span>
                                     </div>
-                                    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px; padding-left:4px;">
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Station East Beds</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:var(--accent-green);">4 / 8 Occupied</span>
+                                    <div
+                                        style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px; padding-left:4px;">
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Station East
+                                                Beds</span>
+                                            <span
+                                                style="font-size:10.5px; font-weight:700; color:var(--accent-green);">4
+                                                / 8 Occupied</span>
                                         </div>
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Station West Beds</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:var(--accent-green);">1 / 6 Occupied</span>
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Station West
+                                                Beds</span>
+                                            <span
+                                                style="font-size:10.5px; font-weight:700; color:var(--accent-green);">1
+                                                / 6 Occupied</span>
                                         </div>
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Mobile Patrols</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:#ffffff;">6 Teams Active</span>
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Mobile
+                                                Patrols</span>
+                                            <span style="font-size:10.5px; font-weight:700; color:#ffffff;">6 Teams
+                                                Active</span>
                                         </div>
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Wet Bulb Temp</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:var(--accent-green);">28.5°C Safe</span>
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Wet Bulb
+                                                Temp</span>
+                                            <span
+                                                style="font-size:10.5px; font-weight:700; color:var(--accent-green);">28.5°C
+                                                Safe</span>
                                         </div>
                                     </div>
                                 </div>
@@ -573,42 +888,73 @@
                                 <div class="intel-header-row">
                                     <div class="intel-title-tag">
                                         <h3>Sustainability & Resources</h3>
-                                        <span class="live-status-badge" style="background:rgba(52,199,89,0.15); color:var(--accent-green); border:1px solid rgba(52,199,89,0.25);"><span class="dot-live"></span> EFFICIENT</span>
+                                        <span class="live-status-badge"
+                                            style="background:rgba(52,199,89,0.15); color:var(--accent-green); border:1px solid rgba(52,199,89,0.25);"><span
+                                                class="dot-live"></span> EFFICIENT</span>
                                     </div>
                                     <div class="intel-actions-row">
                                         <button class="intel-act-btn">
-                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
+                                                stroke-width="2" fill="none">
+                                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6">
+                                                </path>
+                                            </svg>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="heatmap-body-container" style="display:flex; gap:16px; align-items:stretch; padding:10px;">
-                                    <div style="flex:1.2; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.2); border-radius:8px; position:relative;">
-                                        <svg viewBox="0 0 200 200" style="width:90%; height:90%;" stroke="var(--accent-green)" stroke-width="1.5" fill="none">
+                                <div class="heatmap-body-container"
+                                    style="display:flex; gap:16px; align-items:stretch; padding:10px;">
+                                    <div
+                                        style="flex:1.2; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.2); border-radius:8px; position:relative;">
+                                        <svg viewBox="0 0 200 200" style="width:90%; height:90%;"
+                                            stroke="var(--accent-green)" stroke-width="1.5" fill="none">
                                             <!-- Green leaf/sustainability visual -->
-                                            <path d="M 100,30 C 130,60 130,120 100,170 C 70,120 70,60 100,30 Z M 100,30 V 170" />
-                                            <path d="M 100,70 Q 120,60 130,50 M 100,110 Q 120,100 130,90 M 100,90 Q 80,80 70,70 M 100,130 Q 80,120 70,110" />
+                                            <path
+                                                d="M 100,30 C 130,60 130,120 100,170 C 70,120 70,60 100,30 Z M 100,30 V 170" />
+                                            <path
+                                                d="M 100,70 Q 120,60 130,50 M 100,110 Q 120,100 130,90 M 100,90 Q 80,80 70,70 M 100,130 Q 80,120 70,110" />
                                         </svg>
                                     </div>
-                                    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:6px; padding-left:4px;">
-                                        <div style="display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:6px; border-radius:6px;">
-                                            <span style="font-size:8.5px; color:rgba(255,255,255,0.45); text-transform:uppercase;">Power Consumption</span>
-                                            <span style="font-size:11px; font-weight:700; color:#ffffff;">2,450 kW</span>
-                                            <div style="width:100%; height:3px; background:rgba(255,255,255,0.1); border-radius:1.5px; margin-top:3px; overflow:hidden;">
-                                                <div style="width:68%; height:100%; background:var(--accent-green);"></div>
+                                    <div
+                                        style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:6px; padding-left:4px;">
+                                        <div
+                                            style="display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:6px; border-radius:6px;">
+                                            <span
+                                                style="font-size:8.5px; color:rgba(255,255,255,0.45); text-transform:uppercase;">Power
+                                                Consumption</span>
+                                            <span style="font-size:11px; font-weight:700; color:#ffffff;">2,450
+                                                kW</span>
+                                            <div
+                                                style="width:100%; height:3px; background:rgba(255,255,255,0.1); border-radius:1.5px; margin-top:3px; overflow:hidden;">
+                                                <div style="width:68%; height:100%; background:var(--accent-green);">
+                                                </div>
                                             </div>
                                         </div>
-                                        <div style="display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:6px; border-radius:6px;">
-                                            <span style="font-size:8.5px; color:rgba(255,255,255,0.45); text-transform:uppercase;">Water Reserve</span>
-                                            <span style="font-size:11px; font-weight:700; color:#ffffff;">82% Capacity</span>
-                                            <div style="width:100%; height:3px; background:rgba(255,255,255,0.1); border-radius:1.5px; margin-top:3px; overflow:hidden;">
-                                                <div style="width:82%; height:100%; background:var(--accent-blue);"></div>
+                                        <div
+                                            style="display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:6px; border-radius:6px;">
+                                            <span
+                                                style="font-size:8.5px; color:rgba(255,255,255,0.45); text-transform:uppercase;">Water
+                                                Reserve</span>
+                                            <span style="font-size:11px; font-weight:700; color:#ffffff;">82%
+                                                Capacity</span>
+                                            <div
+                                                style="width:100%; height:3px; background:rgba(255,255,255,0.1); border-radius:1.5px; margin-top:3px; overflow:hidden;">
+                                                <div style="width:82%; height:100%; background:var(--accent-blue);">
+                                                </div>
                                             </div>
                                         </div>
-                                        <div style="display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:6px; border-radius:6px;">
-                                            <span style="font-size:8.5px; color:rgba(255,255,255,0.45); text-transform:uppercase;">Recycling Bins</span>
-                                            <span style="font-size:11px; font-weight:700; color:var(--accent-orange);">64% Full</span>
-                                            <div style="width:100%; height:3px; background:rgba(255,255,255,0.1); border-radius:1.5px; margin-top:3px; overflow:hidden;">
-                                                <div style="width:64%; height:100%; background:var(--accent-orange);"></div>
+                                        <div
+                                            style="display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:6px; border-radius:6px;">
+                                            <span
+                                                style="font-size:8.5px; color:rgba(255,255,255,0.45); text-transform:uppercase;">Recycling
+                                                Bins</span>
+                                            <span
+                                                style="font-size:11px; font-weight:700; color:var(--accent-orange);">64%
+                                                Full</span>
+                                            <div
+                                                style="width:100%; height:3px; background:rgba(255,255,255,0.1); border-radius:1.5px; margin-top:3px; overflow:hidden;">
+                                                <div style="width:64%; height:100%; background:var(--accent-orange);">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -620,40 +966,67 @@
                                 <div class="intel-header-row">
                                     <div class="intel-title-tag">
                                         <h3>Broadcasts & Comms</h3>
-                                        <span class="live-status-badge" style="background:rgba(255,149,0,0.15); color:var(--accent-orange); border:1px solid rgba(255,149,0,0.25);"><span class="dot-live" style="background:var(--accent-orange);"></span> STANDBY</span>
+                                        <span class="live-status-badge"
+                                            style="background:rgba(255,149,0,0.15); color:var(--accent-orange); border:1px solid rgba(255,149,0,0.25);"><span
+                                                class="dot-live" style="background:var(--accent-orange);"></span>
+                                            STANDBY</span>
                                     </div>
                                     <div class="intel-actions-row">
                                         <button class="intel-act-btn">
-                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"></path></svg>
+                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
+                                                stroke-width="2" fill="none">
+                                                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+                                                <path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"></path>
+                                            </svg>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="heatmap-body-container" style="display:flex; gap:16px; align-items:stretch; padding:10px;">
-                                    <div style="flex:1.2; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.2); border-radius:8px; position:relative;">
-                                        <svg viewBox="0 0 200 200" style="width:90%; height:90%;" stroke="var(--accent-orange)" stroke-width="1.5" fill="none">
+                                <div class="heatmap-body-container"
+                                    style="display:flex; gap:16px; align-items:stretch; padding:10px;">
+                                    <div
+                                        style="flex:1.2; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.2); border-radius:8px; position:relative;">
+                                        <svg viewBox="0 0 200 200" style="width:90%; height:90%;"
+                                            stroke="var(--accent-orange)" stroke-width="1.5" fill="none">
                                             <!-- Waves outline -->
-                                            <circle cx="100" cy="100" r="10" stroke-width="2" fill="var(--accent-orange)"/>
-                                            <path d="M 100,80 A 20,20 0 0,1 120,100 M 100,120 A 20,20 0 0,1 80,100" stroke-dasharray="2,2"/>
+                                            <circle cx="100" cy="100" r="10" stroke-width="2"
+                                                fill="var(--accent-orange)" />
+                                            <path d="M 100,80 A 20,20 0 0,1 120,100 M 100,120 A 20,20 0 0,1 80,100"
+                                                stroke-dasharray="2,2" />
                                             <path d="M 100,60 A 40,40 0 0,1 140,100 M 100,140 A 40,40 0 0,1 60,100" />
                                             <path d="M 100,40 A 60,60 0 0,1 160,100 M 100,160 A 60,60 0 0,1 40,100" />
                                         </svg>
                                     </div>
-                                    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px; padding-left:4px;">
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">PA Zone Active</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:var(--accent-orange);">Zone 3 Active</span>
+                                    <div
+                                        style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px; padding-left:4px;">
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">PA Zone
+                                                Active</span>
+                                            <span
+                                                style="font-size:10.5px; font-weight:700; color:var(--accent-orange);">Zone
+                                                3 Active</span>
                                         </div>
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Radio Security</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:#ffffff;">24 Active Users</span>
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Radio
+                                                Security</span>
+                                            <span style="font-size:10.5px; font-weight:700; color:#ffffff;">24 Active
+                                                Users</span>
                                         </div>
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Radio Medical</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:#ffffff;">12 Active Users</span>
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Radio
+                                                Medical</span>
+                                            <span style="font-size:10.5px; font-weight:700; color:#ffffff;">12 Active
+                                                Users</span>
                                         </div>
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Broadcasts Sent</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:var(--accent-green);">4 Last Hour</span>
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Broadcasts
+                                                Sent</span>
+                                            <span
+                                                style="font-size:10.5px; font-weight:700; color:var(--accent-green);">4
+                                                Last Hour</span>
                                         </div>
                                     </div>
                                 </div>
@@ -664,47 +1037,100 @@
                                 <div class="intel-header-row">
                                     <div class="intel-title-tag">
                                         <h3>Incident logs & Handover</h3>
-                                        <span class="live-status-badge" style="background:rgba(0,122,255,0.15); color:var(--accent-blue); border:1px solid rgba(0,122,255,0.25);"><span class="dot-live" style="background:var(--accent-blue);"></span> GENERATED</span>
+                                        <span class="live-status-badge"
+                                            style="background:rgba(0,122,255,0.15); color:var(--accent-blue); border:1px solid rgba(0,122,255,0.25);"><span
+                                                class="dot-live" style="background:var(--accent-blue);"></span>
+                                            GENERATED</span>
                                     </div>
                                     <div class="intel-actions-row">
                                         <button class="intel-act-btn">
-                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
+                                                stroke-width="2" fill="none">
+                                                <path
+                                                    d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                                            </svg>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="heatmap-body-container" style="display:flex; gap:16px; align-items:stretch; padding:10px;">
-                                    <div style="flex:1.2; display:flex; flex-direction:column; justify-content:center; gap:8px; background:rgba(0,0,0,0.2); border-radius:8px; padding:12px;">
+                                <div class="heatmap-body-container"
+                                    style="display:flex; gap:16px; align-items:stretch; padding:10px;">
+                                    <div
+                                        style="flex:1.2; display:flex; flex-direction:column; justify-content:center; gap:8px; background:rgba(0,0,0,0.2); border-radius:8px; padding:12px;">
                                         <!-- PDF download list items -->
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:background-color 0.2s;">
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:background-color 0.2s;">
                                             <div style="display:flex; align-items:center; gap:8px;">
-                                                <svg viewBox="0 0 24 24" width="12" height="12" stroke="var(--accent-red)" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                                                <span style="font-size:9.5px; font-weight:600;">Matchday Operations Plan.pdf</span>
+                                                <svg viewBox="0 0 24 24" width="12" height="12"
+                                                    stroke="var(--accent-red)" stroke-width="2" fill="none">
+                                                    <path
+                                                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                                                    </path>
+                                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                                </svg>
+                                                <span style="font-size:9.5px; font-weight:600;">Matchday Operations
+                                                    Plan.pdf</span>
                                             </div>
-                                            <svg viewBox="0 0 24 24" width="10" height="10" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                                            <svg viewBox="0 0 24 24" width="10" height="10"
+                                                stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none">
+                                                <path
+                                                    d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                                            </svg>
                                         </div>
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:background-color 0.2s;">
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:background-color 0.2s;">
                                             <div style="display:flex; align-items:center; gap:8px;">
-                                                <svg viewBox="0 0 24 24" width="12" height="12" stroke="var(--accent-blue)" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                                                <span style="font-size:9.5px; font-weight:600;">Shift Handover Log.csv</span>
+                                                <svg viewBox="0 0 24 24" width="12" height="12"
+                                                    stroke="var(--accent-blue)" stroke-width="2" fill="none">
+                                                    <path
+                                                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                                                    </path>
+                                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                                </svg>
+                                                <span style="font-size:9.5px; font-weight:600;">Shift Handover
+                                                    Log.csv</span>
                                             </div>
-                                            <svg viewBox="0 0 24 24" width="10" height="10" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                                            <svg viewBox="0 0 24 24" width="10" height="10"
+                                                stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none">
+                                                <path
+                                                    d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                                            </svg>
                                         </div>
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:background-color 0.2s;">
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:background-color 0.2s;">
                                             <div style="display:flex; align-items:center; gap:8px;">
-                                                <svg viewBox="0 0 24 24" width="12" height="12" stroke="var(--accent-red)" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                                                <span style="font-size:9.5px; font-weight:600;">Crowd Congestion Log.pdf</span>
+                                                <svg viewBox="0 0 24 24" width="12" height="12"
+                                                    stroke="var(--accent-red)" stroke-width="2" fill="none">
+                                                    <path
+                                                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                                                    </path>
+                                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                                </svg>
+                                                <span style="font-size:9.5px; font-weight:600;">Crowd Congestion
+                                                    Log.pdf</span>
                                             </div>
-                                            <svg viewBox="0 0 24 24" width="10" height="10" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                                            <svg viewBox="0 0 24 24" width="10" height="10"
+                                                stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none">
+                                                <path
+                                                    d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                                            </svg>
                                         </div>
                                     </div>
-                                    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px; padding-left:4px;">
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Handover Shift</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:#ffffff;">A &rarr; B Complete</span>
+                                    <div
+                                        style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px; padding-left:4px;">
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Handover
+                                                Shift</span>
+                                            <span style="font-size:10.5px; font-weight:700; color:#ffffff;">A &rarr; B
+                                                Complete</span>
                                         </div>
-                                        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Closed Incidents</span>
-                                            <span style="font-size:10.5px; font-weight:700; color:var(--accent-green);">14 Handled</span>
+                                        <div
+                                            style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                            <span style="font-size:9.5px; color:rgba(255,255,255,0.6);">Closed
+                                                Incidents</span>
+                                            <span
+                                                style="font-size:10.5px; font-weight:700; color:var(--accent-green);">14
+                                                Handled</span>
                                         </div>
                                     </div>
                                 </div>
@@ -718,7 +1144,11 @@
                             <div class="kpi-card-twin glass-panel">
                                 <div class="kpi-left">
                                     <div class="kpi-icon-container icon-blue">
-                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor"
+                                            stroke-width="2" fill="none">
+                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="9" cy="7" r="4"></circle>
+                                        </svg>
                                     </div>
                                     <div class="kpi-text-info">
                                         <span class="kpi-lbl-top">Total Attendance</span>
@@ -727,7 +1157,8 @@
                                     </div>
                                 </div>
                                 <div class="kpi-right-chart">
-                                    <svg class="sparkline-twin" id="sparkline-attendance" viewBox="0 0 100 30" width="70" height="24"></svg>
+                                    <svg class="sparkline-twin" id="sparkline-attendance" viewBox="0 0 100 30"
+                                        width="70" height="24"></svg>
                                 </div>
                             </div>
 
@@ -735,7 +1166,13 @@
                             <div class="kpi-card-twin glass-panel">
                                 <div class="kpi-left">
                                     <div class="kpi-icon-container icon-orange">
-                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor"
+                                            stroke-width="2" fill="none">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <path
+                                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                            </path>
+                                        </svg>
                                     </div>
                                     <div class="kpi-text-info">
                                         <span class="kpi-lbl-top">Stadium Occupancy</span>
@@ -744,7 +1181,8 @@
                                     </div>
                                 </div>
                                 <div class="kpi-right-chart">
-                                    <svg class="sparkline-twin" id="sparkline-occupancy" viewBox="0 0 100 30" width="70" height="24"></svg>
+                                    <svg class="sparkline-twin" id="sparkline-occupancy" viewBox="0 0 100 30" width="70"
+                                        height="24"></svg>
                                 </div>
                             </div>
 
@@ -752,16 +1190,23 @@
                             <div class="kpi-card-twin glass-panel">
                                 <div class="kpi-left">
                                     <div class="kpi-icon-container icon-blue">
-                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="1" y="3" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor"
+                                            stroke-width="2" fill="none">
+                                            <rect x="1" y="3" width="22" height="16" rx="2" ry="2"></rect>
+                                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                                        </svg>
                                     </div>
                                     <div class="kpi-text-info">
                                         <span class="kpi-lbl-top">Transport Inflow</span>
-                                        <span class="kpi-val-big" id="kpi-val-transport">1,150 <span style="font-size:10px; font-weight:normal; color:rgba(255,255,255,0.4)">/30 min</span></span>
+                                        <span class="kpi-val-big" id="kpi-val-transport">1,150 <span
+                                                style="font-size:10px; font-weight:normal; color:rgba(255,255,255,0.4)">/30
+                                                min</span></span>
                                         <span class="kpi-sub-bottom" id="kpi-status-transport">Metro + Bus</span>
                                     </div>
                                 </div>
                                 <div class="kpi-right-chart">
-                                    <svg class="sparkline-twin" id="sparkline-transport" viewBox="0 0 100 30" width="70" height="24"></svg>
+                                    <svg class="sparkline-twin" id="sparkline-transport" viewBox="0 0 100 30" width="70"
+                                        height="24"></svg>
                                 </div>
                             </div>
 
@@ -769,16 +1214,22 @@
                             <div class="kpi-card-twin glass-panel">
                                 <div class="kpi-left">
                                     <div class="kpi-icon-container icon-green">
-                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor"
+                                            stroke-width="2" fill="none">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
                                     </div>
                                     <div class="kpi-text-info">
                                         <span class="kpi-lbl-top">Avg. Wait Time</span>
                                         <span class="kpi-val-big" id="kpi-val-wait">8 min</span>
-                                        <span class="kpi-sub-bottom color-success" id="kpi-status-wait">↓ 2 min <span style="color:rgba(255,255,255,0.3)">vs last hr</span></span>
+                                        <span class="kpi-sub-bottom color-success" id="kpi-status-wait">↓ 2 min <span
+                                                style="color:rgba(255,255,255,0.3)">vs last hr</span></span>
                                     </div>
                                 </div>
                                 <div class="kpi-right-chart">
-                                    <svg class="sparkline-twin" id="sparkline-wait" viewBox="0 0 100 30" width="70" height="24"></svg>
+                                    <svg class="sparkline-twin" id="sparkline-wait" viewBox="0 0 100 30" width="70"
+                                        height="24"></svg>
                                 </div>
                             </div>
 
@@ -786,16 +1237,21 @@
                             <div class="kpi-card-twin glass-panel">
                                 <div class="kpi-left">
                                     <div class="kpi-icon-container icon-red" id="kpi-icon-alerts">
-                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor"
+                                            stroke-width="2" fill="none">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                        </svg>
                                     </div>
                                     <div class="kpi-text-info">
                                         <span class="kpi-lbl-top">Active Alerts</span>
                                         <span class="kpi-val-big text-danger" id="kpi-val-alerts">2</span>
-                                        <span class="kpi-sub-bottom text-danger" id="kpi-status-alerts">High Priority</span>
+                                        <span class="kpi-sub-bottom text-danger" id="kpi-status-alerts">High
+                                            Priority</span>
                                     </div>
                                 </div>
                                 <div class="kpi-right-chart">
-                                    <svg class="sparkline-twin" id="sparkline-alerts" viewBox="0 0 100 30" width="70" height="24"></svg>
+                                    <svg class="sparkline-twin" id="sparkline-alerts" viewBox="0 0 100 30" width="70"
+                                        height="24"></svg>
                                 </div>
                             </div>
 
@@ -803,7 +1259,11 @@
                             <div class="kpi-card-twin glass-panel">
                                 <div class="kpi-left">
                                     <div class="kpi-icon-container icon-blue">
-                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor"
+                                            stroke-width="2" fill="none">
+                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="9" cy="7" r="4"></circle>
+                                        </svg>
                                     </div>
                                     <div class="kpi-text-info">
                                         <span class="kpi-lbl-top">Staff On Duty</span>
@@ -812,7 +1272,8 @@
                                     </div>
                                 </div>
                                 <div class="kpi-right-chart">
-                                    <svg class="sparkline-twin" id="sparkline-staff" viewBox="0 0 100 30" width="70" height="24"></svg>
+                                    <svg class="sparkline-twin" id="sparkline-staff" viewBox="0 0 100 30" width="70"
+                                        height="24"></svg>
                                 </div>
                             </div>
                         </div>
@@ -828,10 +1289,16 @@
                             <div class="timeline-actions">
                                 <div class="dropdown-filter-btn">
                                     <span>All Events</span>
-                                    <svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                    <svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor"
+                                        stroke-width="2" fill="none">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
                                 </div>
                                 <button class="timeline-play-btn">
-                                    <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                                    <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor">
+                                        <rect x="6" y="4" width="4" height="16"></rect>
+                                        <rect x="14" y="4" width="4" height="16"></rect>
+                                    </svg>
                                 </button>
                             </div>
                         </div>
@@ -840,7 +1307,10 @@
                             <div class="timeline-node-twin active">
                                 <span class="node-time">21:05</span>
                                 <div class="node-icon-circle icon-blue">
-                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path></svg>
+                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor"
+                                        stroke-width="2.5" fill="none">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    </svg>
                                 </div>
                                 <span class="node-title">Metro Inflow Increased</span>
                                 <span class="node-desc">Metro Line 2 inbound</span>
@@ -849,7 +1319,12 @@
                             <div class="timeline-node-twin active">
                                 <span class="node-time">21:09</span>
                                 <div class="node-icon-circle icon-red">
-                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor"
+                                        stroke-width="2.5" fill="none">
+                                        <path
+                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                                        </path>
+                                    </svg>
                                 </div>
                                 <span class="node-title">Density Warning</span>
                                 <span class="node-desc">Gate A density 75%</span>
@@ -858,7 +1333,10 @@
                             <div class="timeline-node-twin active">
                                 <span class="node-time">21:12</span>
                                 <div class="node-icon-circle icon-purple">
-                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor"
+                                        stroke-width="2.5" fill="none">
+                                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
                                 </div>
                                 <span class="node-title">AI Recommendation</span>
                                 <span class="node-desc">Open Gate B suggested</span>
@@ -867,7 +1345,10 @@
                             <div class="timeline-node-twin" id="node-recommendation-applied" style="opacity:0.4;">
                                 <span class="node-time" id="time-rec-applied">21:14</span>
                                 <div class="node-icon-circle icon-green">
-                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor"
+                                        stroke-width="2.5" fill="none">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
                                 </div>
                                 <span class="node-title" id="event-rec-applied">Action Taken</span>
                                 <span class="node-desc">Gate B opened</span>
@@ -876,7 +1357,10 @@
                             <div class="timeline-node-twin" id="node-crowd-improved" style="opacity:0.4;">
                                 <span class="node-time">21:18</span>
                                 <div class="node-icon-circle icon-blue">
-                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor"
+                                        stroke-width="2.5" fill="none">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
                                 </div>
                                 <span class="node-title">Density Improving</span>
                                 <span class="node-desc">Gate A density 60%</span>
@@ -885,7 +1369,10 @@
                             <div class="timeline-node-twin" id="node-situation-normal" style="opacity:0.4;">
                                 <span class="node-time">21:21</span>
                                 <div class="node-icon-circle icon-green">
-                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor"
+                                        stroke-width="2.5" fill="none">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
                                 </div>
                                 <span class="node-title">Situation Normal</span>
                                 <span class="node-desc">All clear!</span>
@@ -899,7 +1386,12 @@
                     <div class="copilot-card glass-panel">
                         <div class="copilot-header-twin">
                             <div class="copilot-title-row">
-                                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="copilot-sparkle"><path d="M9 21.5L9.75 16.5L14.75 15.75L9.75 15L9 10L8.25 15L3.25 15.75L8.25 16.5L9 21.5Z M17 11.5L17.5 8L21 7.5L17.5 7L17 3.5L16.5 7L13 7.5L16.5 8L17 11.5Z"></path></svg>
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"
+                                    class="copilot-sparkle">
+                                    <path
+                                        d="M9 21.5L9.75 16.5L14.75 15.75L9.75 15L9 10L8.25 15L3.25 15.75L8.25 16.5L9 21.5Z M17 11.5L17.5 8L21 7.5L17.5 7L17 3.5L16.5 7L13 7.5L16.5 8L17 11.5Z">
+                                    </path>
+                                </svg>
                                 <h3>AI Operational Copilot (LLM-Guided)</h3>
                             </div>
                             <span class="beta-badge-purple">BETA</span>
@@ -940,9 +1432,14 @@
                                 <div class="meter-row-twin">
                                     <div class="meter-header-twin">
                                         <span class="meter-name">Estimated Impact</span>
-                                        <span class="meter-value text-green" id="progress-val-improvement">18% <span style="font-size:9px; font-weight:normal; color:rgba(255,255,255,0.4)">Improvement in crowd distribution</span></span>
+                                        <span class="meter-value text-green" id="progress-val-improvement">18% <span
+                                                style="font-size:9px; font-weight:normal; color:rgba(255,255,255,0.4)">Improvement
+                                                in crowd distribution</span></span>
                                     </div>
-                                    <div class="progress-track-twin"><div class="progress-fill-twin fill-green-bar" style="width: 18%;" id="progress-fill-improvement"></div></div>
+                                    <div class="progress-track-twin">
+                                        <div class="progress-fill-twin fill-green-bar" style="width: 18%;"
+                                            id="progress-fill-improvement"></div>
+                                    </div>
                                 </div>
 
                                 <div class="meter-row-twin" style="margin-top:14px;">
@@ -950,15 +1447,24 @@
                                         <span class="meter-name">Confidence Score</span>
                                         <span class="meter-value" id="progress-val-confidence">86%</span>
                                     </div>
-                                    <div class="progress-track-twin"><div class="progress-fill-twin fill-blue-bar" style="width: 86%;" id="progress-fill-confidence"></div></div>
+                                    <div class="progress-track-twin">
+                                        <div class="progress-fill-twin fill-blue-bar" style="width: 86%;"
+                                            id="progress-fill-confidence"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Apply CTA -->
                         <div class="copilot-footer-twin">
-                            <button class="copilot-cta-btn" id="btn-apply-rec" aria-label="Apply AI recommended mitigation action">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="margin-right:6px;"><path d="M9 21.5L9.75 16.5L14.75 15.75L9.75 15L9 10L8.25 15L3.25 15.75L8.25 16.5L9 21.5Z"></path></svg>
+                            <button class="copilot-cta-btn" id="btn-apply-rec"
+                                aria-label="Apply AI recommended mitigation action">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"
+                                    style="margin-right:6px;">
+                                    <path
+                                        d="M9 21.5L9.75 16.5L14.75 15.75L9.75 15L9 10L8.25 15L3.25 15.75L8.25 16.5L9 21.5Z">
+                                    </path>
+                                </svg>
                                 <span>Apply Recommendation</span>
                             </button>
                         </div>
@@ -967,12 +1473,16 @@
             </div>
         </div>
 
-        <div class="mini-map-container" style="z-index: 100; position: absolute; bottom: 32px; right: 32px; display: flex; flex-direction: column; align-items: center; gap: 12px; touch-action: none;">
+        <div class="mini-map-container"
+            style="z-index: 100; position: absolute; bottom: 32px; right: 32px; display: flex; flex-direction: column; align-items: center; gap: 12px; touch-action: none;">
             <div class="mini-map" id="mini-map">
-                <div id="minimap-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/images/wireframe.png'); background-size: 85%; background-position: center; background-repeat: no-repeat; opacity: 0.9; mix-blend-mode: screen; transform: rotate(90deg);"></div>
+                <div id="minimap-bg"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('assets/images/wireframe.png'); background-size: 85%; background-position: center; background-repeat: no-repeat; opacity: 0.9; mix-blend-mode: screen; transform: rotate(90deg);">
+                </div>
                 <div id="minimap-dot" class="map-center-dot" style="transition: none;"></div>
             </div>
-            <div class="glass-panel" style="padding: 6px 16px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--text-light); text-align: center; border: 1px solid var(--glass-border); box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+            <div class="glass-panel"
+                style="padding: 6px 16px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--text-light); text-align: center; border: 1px solid var(--glass-border); box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
                 Drag to View
             </div>
         </div>
@@ -980,43 +1490,69 @@
     </div>
 
     <!-- Return to Main View Button -->
-    <button id="btn-return" class="glass-btn primary-btn hidden" aria-label="Return to stadium 3D overview" style="position: absolute; bottom: 160px; left: 50%; transform: translateX(-50%); width: auto; padding: 0 24px; z-index: 100; background: rgba(0, 0, 0, 0.75) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-        <svg viewBox="0 0 24 24" width="16" height="16" stroke="#ffffff" stroke-width="2" fill="none"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+    <button id="btn-return" class="glass-btn primary-btn hidden" aria-label="Return to stadium 3D overview"
+        style="position: absolute; bottom: 160px; left: 50%; transform: translateX(-50%); width: auto; padding: 0 24px; z-index: 100; background: rgba(0, 0, 0, 0.75) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="#ffffff" stroke-width="2" fill="none">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
         Return to Main View
     </button>
 
     <!-- Temporary Debug Popup -->
-    <div id="debug-panel" class="glass-panel hidden" style="position: absolute; top: 20px; left: 20px; z-index: 999; width: 300px; color: var(--text-light); background: var(--glass-bg);">
+    <div id="debug-panel" class="glass-panel hidden"
+        style="position: absolute; top: 20px; left: 20px; z-index: 999; width: 300px; color: var(--text-light); background: var(--glass-bg);">
         <h3 style="font-size: 14px; margin-bottom: 12px;" id="debug-title">Camera Debug</h3>
-        
-        <div id="debug-cam-group" style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; margin-bottom: 12px;">
-            <label style="display:flex; justify-content:space-between">Cam X: <input type="number" id="dbg-cx" step="5" style="width: 80px;"></label>
-            <label style="display:flex; justify-content:space-between">Cam Y: <input type="number" id="dbg-cy" step="5" style="width: 80px;"></label>
-            <label style="display:flex; justify-content:space-between">Cam Z: <input type="number" id="dbg-cz" step="5" style="width: 80px;"></label>
-            <label style="display:flex; justify-content:space-between">Target X: <input type="number" id="dbg-tx" step="5" style="width: 80px;"></label>
-            <label style="display:flex; justify-content:space-between">Target Y: <input type="number" id="dbg-ty" step="5" style="width: 80px;"></label>
-            <label style="display:flex; justify-content:space-between">Target Z: <input type="number" id="dbg-tz" step="5" style="width: 80px;"></label>
-            <label style="display:flex; justify-content:space-between">Cam Zoom: <input type="number" id="dbg-zoom" step="0.1" style="width: 80px;"></label>
+
+        <div id="debug-cam-group"
+            style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; margin-bottom: 12px;">
+            <label style="display:flex; justify-content:space-between">Cam X: <input type="number" id="dbg-cx" step="5"
+                    style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Cam Y: <input type="number" id="dbg-cy" step="5"
+                    style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Cam Z: <input type="number" id="dbg-cz" step="5"
+                    style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Target X: <input type="number" id="dbg-tx"
+                    step="5" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Target Y: <input type="number" id="dbg-ty"
+                    step="5" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Target Z: <input type="number" id="dbg-tz"
+                    step="5" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Cam Zoom: <input type="number" id="dbg-zoom"
+                    step="0.1" style="width: 80px;"></label>
         </div>
 
-        <div id="debug-mod-group" class="hidden" style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; margin-bottom: 12px;">
-            <label style="display:flex; justify-content:space-between">Model X: <input type="number" id="dbg-mx" step="1" style="width: 80px;"></label>
-            <label style="display:flex; justify-content:space-between">Model Y: <input type="number" id="dbg-my" step="1" style="width: 80px;"></label>
-            <label style="display:flex; justify-content:space-between">Model Z: <input type="number" id="dbg-mz" step="1" style="width: 80px;"></label>
-            <label style="display:flex; justify-content:space-between">Rot X: <input type="number" id="dbg-rx" step="0.1" style="width: 80px;"></label>
-            <label style="display:flex; justify-content:space-between">Rot Y: <input type="number" id="dbg-ry" step="0.1" style="width: 80px;"></label>
-            <label style="display:flex; justify-content:space-between">Rot Z: <input type="number" id="dbg-rz" step="0.1" style="width: 80px;"></label>
-            <label style="display:flex; justify-content:space-between">Scale: <input type="number" id="dbg-mscale" step="0.1" style="width: 80px;"></label>
+        <div id="debug-mod-group" class="hidden"
+            style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; margin-bottom: 12px;">
+            <label style="display:flex; justify-content:space-between">Model X: <input type="number" id="dbg-mx"
+                    step="1" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Model Y: <input type="number" id="dbg-my"
+                    step="1" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Model Z: <input type="number" id="dbg-mz"
+                    step="1" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Rot X: <input type="number" id="dbg-rx"
+                    step="0.1" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Rot Y: <input type="number" id="dbg-ry"
+                    step="0.1" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Rot Z: <input type="number" id="dbg-rz"
+                    step="0.1" style="width: 80px;"></label>
+            <label style="display:flex; justify-content:space-between">Scale: <input type="number" id="dbg-mscale"
+                    step="0.1" style="width: 80px;"></label>
         </div>
-        
-        <textarea id="debug-output" style="width: 100%; height: 60px; font-size: 10px; margin-bottom: 12px; background: rgba(255,255,255,0.5); border: 1px solid var(--glass-border); color: #000; padding: 4px;" readonly></textarea>
-        
+
+        <textarea id="debug-output"
+            style="width: 100%; height: 60px; font-size: 10px; margin-bottom: 12px; background: rgba(255,255,255,0.5); border: 1px solid var(--glass-border); color: #000; padding: 4px;"
+            readonly></textarea>
+
         <div style="display: flex; gap: 8px;">
-            <button id="btn-debug-copy" class="glass-btn primary-btn" style="flex: 1; height: 32px; font-size: 12px; color: #000;">Copy</button>
-            <button id="btn-debug-cancel" class="glass-btn" style="flex: 1; height: 32px; font-size: 12px; color: #000; background: rgba(255,255,255,0.2);">Cancel</button>
+            <button id="btn-debug-copy" class="glass-btn primary-btn"
+                style="flex: 1; height: 32px; font-size: 12px; color: #000;">Copy</button>
+            <button id="btn-debug-cancel" class="glass-btn"
+                style="flex: 1; height: 32px; font-size: 12px; color: #000; background: rgba(255,255,255,0.2);">Cancel</button>
         </div>
     </div>
 
     <script type="module" src="js/app.js?v=4"></script>
 </body>
+
 </html>

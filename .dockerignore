@@ -4,7 +4,7 @@ dist
 .gitignore
 .dockerignore
 Dockerfile
-nginx.conf.template
+#nginx.conf.template
 README.md
 walkthrough.md
 implementation_plan.md

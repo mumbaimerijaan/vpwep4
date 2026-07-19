@@ -1,15 +1,29 @@
 {
-  "name": "sub1",
+  "name": "stadium-operations-twin",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Smart Stadium & Tournament Operations Center - FIFA World Cup 2026",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "keywords": [
+    "threejs",
+    "digital-twin",
+    "operations-center",
+    "fifa-world-cup",
+    "gsap",
+    "smart-stadium",
+    "ai-copilot",
+    "crowd-intelligence"
+  ],
+  "author": "Mumbai Meri Jaan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mumbaimerijaan/vpwep4.git"
+  },
   "dependencies": {
     "gsap": "^3.15.0",
     "three": "^0.185.1"

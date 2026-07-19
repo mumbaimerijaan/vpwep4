@@ -4,45 +4,25 @@ export function loadModel(scene) {
     return new Promise((resolve, reject) => {
         const loader = new GLTFLoader();
         
-        // User's Google Drive File ID for stadium.glb
-        const fileId = '1QVgfP9BEXjRx7FbGbxSZfRIuCQs-WGGA';
+        // GitHub Release Asset URL (which natively supports CORS and keeps the heavy GLB out of git source tree)
+        const modelUrl = 'https://github.com/mumbaimerijaan/vpwep4/releases/download/v1.0.0/stadium.glb';
         
-        // Symmetrical fail-safe URLs to bypass CORS restrictions
-        const urls = [
-            `https://docs.google.com/uc?export=download&id=${fileId}`,
-            `https://corsproxy.io/?${encodeURIComponent(`https://docs.google.com/uc?export=download&id=${fileId}`)}`,
-            `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://docs.google.com/uc?export=download&id=${fileId}`)}`
-        ];
-        
-        let attempt = 0;
-        
-        function tryLoad() {
-            if (attempt >= urls.length) {
-                reject(new Error("All Google Drive load paths failed due to strict CORS or access restrictions."));
-                return;
+        console.log("Loading Al Janoub Stadium model from GitHub CDN...");
+
+        loader.load(
+            modelUrl,
+            (gltf) => {
+                const model = gltf.scene;
+                setupModel(model, scene);
+                console.log("Stadium model loaded successfully!");
+                resolve(model);
+            },
+            undefined,
+            (error) => {
+                console.error("Failed to load stadium model:", error);
+                reject(error);
             }
-            
-            const currentUrl = urls[attempt];
-            console.log(`Loading Al Janoub Stadium (Attempt ${attempt + 1}/${urls.length})...`);
-            
-            loader.load(
-                currentUrl,
-                (gltf) => {
-                    const model = gltf.scene;
-                    setupModel(model, scene);
-                    console.log(`Stadium model loaded successfully on attempt ${attempt + 1}!`);
-                    resolve(model);
-                },
-                undefined,
-                (error) => {
-                    console.warn(`Load attempt ${attempt + 1} failed (likely CORS/Access restriction):`, error);
-                    attempt++;
-                    tryLoad();
-                }
-            );
-        }
-        
-        tryLoad();
+        );
     });
 }
 

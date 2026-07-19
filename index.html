@@ -210,382 +210,418 @@
 
         <!-- Operations Dashboard View Overlay -->
         <div id="dashboard-view" class="dashboard-view hidden">
-            <!-- Navigation Tabs -->
-            <div class="dashboard-tabs-container">
-                <div class="dashboard-tabs">
-                    <button class="tab-item active" data-tab="overview">Overview</button>
-                    <button class="tab-item" data-tab="crowd">Crowd Intelligence</button>
-                    <button class="tab-item" data-tab="transport">Transport</button>
-                    <button class="tab-item" data-tab="security">Security</button>
-                    <button class="tab-item" data-tab="medical">Medical</button>
-                    <button class="tab-item" data-tab="incidents">Incidents</button>
-                    <button class="tab-item" data-tab="sustainability">Sustainability</button>
-                    <button class="tab-item" data-tab="communications">Communications</button>
-                    <div class="tab-underline"></div>
-                </div>
-            </div>
+            <div class="dashboard-grid">
+                
+                <!-- LEFT COLUMN: Navigation Sidebar & Current Incidents -->
+                <div class="db-left-col">
+                    <!-- Sidebar Navigation Card -->
+                    <div class="sidebar-nav glass-panel">
+                        <div class="sidebar-header">
+                            <h3>Operations Dashboard</h3>
+                        </div>
+                        <nav class="sidebar-menu">
+                            <button class="sidebar-item active" data-tab="overview">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                <span>Overview</span>
+                            </button>
+                            <button class="sidebar-item" data-tab="crowd">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                <span>Crowd Intelligence</span>
+                            </button>
+                            <button class="sidebar-item" data-tab="transport">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><path d="M4 16c4 0 8-4 8-8"></path><path d="M12 20c0-4 4-8 8-8"></path></svg>
+                                <span>Transport</span>
+                            </button>
+                            <button class="sidebar-item" data-tab="security">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                <span>Security</span>
+                            </button>
+                            <button class="sidebar-item" data-tab="medical">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                                <span>Medical</span>
+                            </button>
+                            <button class="sidebar-item" data-tab="sustainability">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                <span>Sustainability</span>
+                            </button>
+                            <button class="sidebar-item" data-tab="communications">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                <span>Communications</span>
+                            </button>
+                            <button class="sidebar-item" data-tab="reports">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                <span>Reports</span>
+                            </button>
+                        </nav>
+                    </div>
 
-            <!-- Main KPI Row (6 cards) -->
-            <div class="kpi-row">
-                <!-- KPI 1: Attendance -->
-                <div class="kpi-card glass-panel fade-up-card">
-                    <div class="kpi-header">
-                        <span class="kpi-title">Attendance</span>
-                        <div class="kpi-icon">
-                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <!-- Current Incidents Card -->
+                    <div class="current-incidents-card glass-panel">
+                        <div class="inc-card-header">
+                            <h3>Current Incidents</h3>
+                            <a href="#" class="view-all-link">View All &rarr;</a>
                         </div>
-                    </div>
-                    <div class="kpi-body">
-                        <span class="kpi-value" id="kpi-val-attendance">38,476</span>
-                        <div class="kpi-trend">
-                            <svg class="sparkline" id="sparkline-attendance" viewBox="0 0 100 30" width="80" height="24"></svg>
-                            <span class="kpi-change text-success">78%</span>
-                        </div>
-                    </div>
-                </div>
+                        <div class="incidents-sidebar-list" id="sidebar-incident-list">
+                            <div class="sidebar-inc-item priority-high" id="inc-1">
+                                <div class="inc-icon-circle color-red">
+                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                </div>
+                                <div class="inc-info-mid">
+                                    <span class="inc-title-text">High Density at Gate A</span>
+                                    <span class="inc-time-text">2 min ago</span>
+                                </div>
+                                <span class="sidebar-inc-badge badge-red">High</span>
+                            </div>
 
-                <!-- KPI 2: Occupancy -->
-                <div class="kpi-card glass-panel fade-up-card">
-                    <div class="kpi-header">
-                        <span class="kpi-title">Occupancy</span>
-                        <div class="kpi-icon">
-                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
-                        </div>
-                    </div>
-                    <div class="kpi-body">
-                        <span class="kpi-value" id="kpi-val-occupancy">52%</span>
-                        <div class="kpi-trend">
-                            <svg class="sparkline" id="sparkline-occupancy" viewBox="0 0 100 30" width="80" height="24"></svg>
-                            <span class="kpi-change text-warning" id="kpi-status-occupancy">Moderate</span>
-                        </div>
-                    </div>
-                </div>
+                            <div class="sidebar-inc-item priority-medium" id="inc-2">
+                                <div class="inc-icon-circle color-orange">
+                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.5" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                </div>
+                                <div class="inc-info-mid">
+                                    <span class="inc-title-text">Metro Inflow Surge</span>
+                                    <span class="inc-time-text">5 min ago</span>
+                                </div>
+                                <span class="sidebar-inc-badge badge-orange">Medium</span>
+                            </div>
 
-                <!-- KPI 3: Transport Inflow -->
-                <div class="kpi-card glass-panel fade-up-card">
-                    <div class="kpi-header">
-                        <span class="kpi-title">Transport Inflow</span>
-                        <div class="kpi-icon">
-                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><path d="M4 16c4 0 8-4 8-8"></path><path d="M12 20c0-4 4-8 8-8"></path></svg>
-                        </div>
-                    </div>
-                    <div class="kpi-body">
-                        <span class="kpi-value" id="kpi-val-transport">1,150</span>
-                        <div class="kpi-trend">
-                            <svg class="sparkline" id="sparkline-transport" viewBox="0 0 100 30" width="80" height="24"></svg>
-                            <span class="kpi-change text-light" id="kpi-status-transport">Visitors / 30m</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- KPI 4: Average Wait -->
-                <div class="kpi-card glass-panel fade-up-card">
-                    <div class="kpi-header">
-                        <span class="kpi-title">Average Wait</span>
-                        <div class="kpi-icon">
-                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                        </div>
-                    </div>
-                    <div class="kpi-body">
-                        <span class="kpi-value" id="kpi-val-wait">8 min</span>
-                        <div class="kpi-trend">
-                            <svg class="sparkline" id="sparkline-wait" viewBox="0 0 100 30" width="80" height="24"></svg>
-                            <span class="kpi-change text-success" id="kpi-status-wait">↓ 2 min</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- KPI 5: Active Alerts -->
-                <div class="kpi-card glass-panel fade-up-card">
-                    <div class="kpi-header">
-                        <span class="kpi-title">Active Alerts</span>
-                        <div class="kpi-icon text-danger" id="kpi-icon-alerts">
-                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                        </div>
-                    </div>
-                    <div class="kpi-body">
-                        <span class="kpi-value text-danger" id="kpi-val-alerts">2</span>
-                        <div class="kpi-trend">
-                            <svg class="sparkline" id="sparkline-alerts" viewBox="0 0 100 30" width="80" height="24"></svg>
-                            <span class="kpi-change text-danger" id="kpi-status-alerts">Requires Action</span>
+                            <div class="sidebar-inc-item priority-low" id="inc-3">
+                                <div class="inc-icon-circle color-green">
+                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div class="inc-info-mid">
+                                    <span class="inc-title-text">Food Court Queue Normalized</span>
+                                    <span class="inc-time-text">9 min ago</span>
+                                </div>
+                                <span class="sidebar-inc-badge badge-green">Low</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- KPI 6: Staff Available -->
-                <div class="kpi-card glass-panel fade-up-card">
-                    <div class="kpi-header">
-                        <span class="kpi-title">Staff Available</span>
-                        <div class="kpi-icon">
-                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <!-- CENTER COLUMN: KPI Cards, Heatmap & Timeline -->
+                <div class="db-center-col">
+                    <!-- Top KPI Row (6 cards side-by-side) -->
+                    <div class="db-kpis-container">
+                        <!-- Card 1: Attendance -->
+                        <div class="kpi-card-twin glass-panel">
+                            <div class="kpi-left">
+                                <div class="kpi-icon-container icon-blue">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                                </div>
+                                <div class="kpi-text-info">
+                                    <span class="kpi-lbl-top">Total Attendance</span>
+                                    <span class="kpi-val-big" id="kpi-val-attendance">38,476</span>
+                                    <span class="kpi-sub-bottom">78% Capacity</span>
+                                </div>
+                            </div>
+                            <div class="kpi-right-chart">
+                                <svg class="sparkline-twin" id="sparkline-attendance" viewBox="0 0 100 30" width="70" height="24"></svg>
+                            </div>
                         </div>
-                    </div>
-                    <div class="kpi-body">
-                        <span class="kpi-value" id="kpi-val-staff">245</span>
-                        <div class="kpi-trend">
-                            <svg class="sparkline" id="sparkline-staff" viewBox="0 0 100 30" width="80" height="24"></svg>
-                            <span class="kpi-change text-success">92%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Middle Section: Main Stadium View + Copilot Panel -->
-            <div class="dashboard-middle-row">
-                <!-- Stadium Heatmap Widget -->
-                <div class="stadium-heatmap-widget glass-panel">
-                    <div class="heatmap-header">
-                        <h3>Animated Crowd Heatmap</h3>
-                        <span class="live-tag"><span class="dot-red pulse"></span> LIVE TWIN</span>
+                        <!-- Card 2: Occupancy -->
+                        <div class="kpi-card-twin glass-panel">
+                            <div class="kpi-left">
+                                <div class="kpi-icon-container icon-orange">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                                </div>
+                                <div class="kpi-text-info">
+                                    <span class="kpi-lbl-top">Stadium Occupancy</span>
+                                    <span class="kpi-val-big" id="kpi-val-occupancy">52%</span>
+                                    <span class="kpi-sub-bottom" id="kpi-status-occupancy">Moderate</span>
+                                </div>
+                            </div>
+                            <div class="kpi-right-chart">
+                                <svg class="sparkline-twin" id="sparkline-occupancy" viewBox="0 0 100 30" width="70" height="24"></svg>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Transport Inflow -->
+                        <div class="kpi-card-twin glass-panel">
+                            <div class="kpi-left">
+                                <div class="kpi-icon-container icon-blue">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="1" y="3" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                                </div>
+                                <div class="kpi-text-info">
+                                    <span class="kpi-lbl-top">Transport Inflow</span>
+                                    <span class="kpi-val-big" id="kpi-val-transport">1,150 <span style="font-size:10px; font-weight:normal; color:rgba(255,255,255,0.4)">/30 min</span></span>
+                                    <span class="kpi-sub-bottom" id="kpi-status-transport">Metro + Bus</span>
+                                </div>
+                            </div>
+                            <div class="kpi-right-chart">
+                                <svg class="sparkline-twin" id="sparkline-transport" viewBox="0 0 100 30" width="70" height="24"></svg>
+                            </div>
+                        </div>
+
+                        <!-- Card 4: Average Wait Time -->
+                        <div class="kpi-card-twin glass-panel">
+                            <div class="kpi-left">
+                                <div class="kpi-icon-container icon-green">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                </div>
+                                <div class="kpi-text-info">
+                                    <span class="kpi-lbl-top">Avg. Wait Time</span>
+                                    <span class="kpi-val-big" id="kpi-val-wait">8 min</span>
+                                    <span class="kpi-sub-bottom color-success" id="kpi-status-wait">↓ 2 min <span style="color:rgba(255,255,255,0.3)">vs last hr</span></span>
+                                </div>
+                            </div>
+                            <div class="kpi-right-chart">
+                                <svg class="sparkline-twin" id="sparkline-wait" viewBox="0 0 100 30" width="70" height="24"></svg>
+                            </div>
+                        </div>
+
+                        <!-- Card 5: Active Alerts -->
+                        <div class="kpi-card-twin glass-panel">
+                            <div class="kpi-left">
+                                <div class="kpi-icon-container icon-red" id="kpi-icon-alerts">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                </div>
+                                <div class="kpi-text-info">
+                                    <span class="kpi-lbl-top">Active Alerts</span>
+                                    <span class="kpi-val-big text-danger" id="kpi-val-alerts">2</span>
+                                    <span class="kpi-sub-bottom text-danger" id="kpi-status-alerts">High Priority</span>
+                                </div>
+                            </div>
+                            <div class="kpi-right-chart">
+                                <svg class="sparkline-twin" id="sparkline-alerts" viewBox="0 0 100 30" width="70" height="24"></svg>
+                            </div>
+                        </div>
+
+                        <!-- Card 6: Staff On Duty -->
+                        <div class="kpi-card-twin glass-panel">
+                            <div class="kpi-left">
+                                <div class="kpi-icon-container icon-blue">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                                </div>
+                                <div class="kpi-text-info">
+                                    <span class="kpi-lbl-top">Staff On Duty</span>
+                                    <span class="kpi-val-big" id="kpi-val-staff">245</span>
+                                    <span class="kpi-sub-bottom">92% of required</span>
+                                </div>
+                            </div>
+                            <div class="kpi-right-chart">
+                                <svg class="sparkline-twin" id="sparkline-staff" viewBox="0 0 100 30" width="70" height="24"></svg>
+                            </div>
+                        </div>
                     </div>
-                    <div class="heatmap-container">
-                        <img src="assets/images/stadium_topdown.png" alt="Stadium Topdown" class="stadium-topdown-img">
-                        <!-- Heatmap Overlay Blobs -->
-                        <div class="heatmap-overlay">
-                            <!-- Gate A (Red Hotspot) -->
-                            <div class="heatmap-blob blob-red" style="top: 30%; left: 48%; width: 140px; height: 140px;" id="blob-gate-a"></div>
-                            <!-- Parking (Yellow/Orange) -->
-                            <div class="heatmap-blob blob-orange" style="top: 75%; left: 45%; width: 160px; height: 160px;" id="blob-parking"></div>
-                            <!-- Fan Zone (Green/Yellow) -->
-                            <div class="heatmap-blob blob-yellow" style="top: 50%; left: 20%; width: 120px; height: 120px;" id="blob-fanzone"></div>
-                            <!-- F&B Food Court (Green) -->
-                            <div class="heatmap-blob blob-green" style="top: 50%; left: 75%; width: 130px; height: 130px;" id="blob-fnb"></div>
+
+                    <!-- Main Stadium Heatmap Panel -->
+                    <div class="stadium-intel-card glass-panel">
+                        <div class="intel-header-row">
+                            <div class="intel-title-tag">
+                                <h3>Stadium Crowd Intelligence</h3>
+                                <span class="live-status-badge"><span class="dot-live"></span> LIVE</span>
+                            </div>
+                            <div class="intel-actions-row">
+                                <button class="intel-act-btn">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path></svg>
+                                </button>
+                                <button class="intel-act-btn">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+                                </button>
+                            </div>
                         </div>
                         
-                        <!-- Floating Location Glass Pills -->
-                        <div class="floating-label glass-panel operational" style="top: 25%; left: 48%;" id="pill-gate-a">
-                            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path></svg>
-                            <span>Gate A</span>
-                            <span class="lbl-status text-danger" id="status-text-gate-a">HIGH DENSITY</span>
-                        </div>
-                        <div class="floating-label glass-panel operational" style="top: 20%; left: 30%;">
-                            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path></svg>
-                            <span>Gate B</span>
-                            <span class="lbl-status text-success">NORMAL</span>
-                        </div>
-                        <div class="floating-label glass-panel operational" style="top: 40%; left: 25%;">
-                            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path></svg>
-                            <span>Gate C</span>
-                            <span class="lbl-status text-success">NORMAL</span>
-                        </div>
-                        <div class="floating-label glass-panel operational" style="top: 85%; left: 32%;" id="pill-metro">
-                            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="M9 15c-3 0-4-2-4-2h8s-1 2-4 2z"></path></svg>
-                            <span>Metro</span>
-                            <span class="lbl-status text-warning" id="status-text-metro">INFLOW SURGE</span>
-                        </div>
-                        <div class="floating-label glass-panel operational" style="top: 80%; left: 60%;" id="pill-parking">
-                            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><path d="M9 17V7h4a3 3 0 0 1 0 6H9"></path></svg>
-                            <span>Parking</span>
-                            <span class="lbl-status text-warning" id="status-text-parking">MODERATE</span>
-                        </div>
-                        <div class="floating-label glass-panel operational" style="top: 55%; left: 78%;" id="pill-fnb">
-                            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                            <span>Food Court</span>
-                            <span class="lbl-status text-success" id="status-text-fnb">NORMAL</span>
-                        </div>
-                        <div class="floating-label glass-panel operational" style="top: 40%; left: 68%;">
-                            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
-                            <span>Medical</span>
-                            <span class="lbl-status text-success">NORMAL</span>
-                        </div>
-                        <div class="floating-label glass-panel operational" style="top: 35%; left: 60%;">
-                            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                            <span>VIP</span>
-                            <span class="lbl-status text-success">NORMAL</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AI Copilot Panel -->
-                <div class="copilot-panel glass-panel">
-                    <div class="copilot-header">
-                        <div class="copilot-title-group">
-                            <div class="copilot-icon">
-                                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"></line><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="6.34" y1="17.66" x2="4.93" y2="19.07"></line><line x1="19.07" y1="4.93" x2="17.66" y2="6.34"></line></svg>
-                            </div>
-                            <h3>AI Operations Copilot</h3>
-                        </div>
-                        <span class="beta-badge">BETA</span>
-                    </div>
-
-                    <div class="copilot-body">
-                        <!-- Current Situation -->
-                        <div class="copilot-section">
-                            <h4>Current Situation</h4>
-                            <ul class="situation-list">
-                                <li class="situation-item text-danger" id="sit-gate-a">Crowd density near Gate A is increasing.</li>
-                                <li class="situation-item text-warning" id="sit-metro">Metro Line 2 arriving within 10 minutes.</li>
-                                <li class="situation-item text-success">Overall venue remains operational.</li>
-                            </ul>
-                        </div>
-
-                        <!-- Recommendations -->
-                        <div class="copilot-section">
-                            <h4>AI Recommendations</h4>
-                            <div class="recommendation-list">
-                                <div class="rec-item">
-                                    <span class="rec-number">1</span>
-                                    <span class="rec-text" id="rec-text-1">Redirect arriving visitors to Gate B</span>
-                                </div>
-                                <div class="rec-item">
-                                    <span class="rec-number">2</span>
-                                    <span class="rec-text">Deploy two mobile volunteer staff to Metro egress path</span>
-                                </div>
-                                <div class="rec-item">
-                                    <span class="rec-number">3</span>
-                                    <span class="rec-text">Increase directional visual signage towards Food Court</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Metrics Progress -->
-                        <div class="copilot-section metrics-progress">
-                            <div class="progress-item">
-                                <div class="progress-lbl-row">
-                                    <span>Estimated Improvement</span>
-                                    <span class="progress-val" id="progress-val-improvement">18%</span>
-                                </div>
-                                <div class="progress-track"><div class="progress-fill" style="width: 18%;" id="progress-fill-improvement"></div></div>
-                            </div>
+                        <div class="heatmap-body-container">
+                            <img src="assets/images/stadium_topdown.png" alt="Stadium Topdown View" class="stadium-topdown-img-twin">
                             
-                            <div class="progress-item">
-                                <div class="progress-lbl-row">
-                                    <span>AI Confidence</span>
-                                    <span class="progress-val" id="progress-val-confidence">86%</span>
+                            <!-- Heatmap Blobs Overlay -->
+                            <div class="heatmap-overlay-twin">
+                                <!-- Gate A (Red Hotspot) -->
+                                <div class="heatmap-blob-twin blob-red-twin" style="top: 40%; left: 63%; width: 150px; height: 150px;" id="blob-gate-a"></div>
+                                <!-- Parking / Gate B (Yellow/Orange) -->
+                                <div class="heatmap-blob-twin blob-yellow-twin" style="top: 36%; left: 45%; width: 130px; height: 130px;" id="blob-parking"></div>
+                                <!-- Metro (Blue/Cyan Inflow) -->
+                                <div class="heatmap-blob-twin blob-blue-twin" style="top: 36%; left: 26%; width: 140px; height: 140px;" id="blob-metro"></div>
+                                <!-- Food Court (Green) -->
+                                <div class="heatmap-blob-twin blob-green-twin" style="top: 58%; left: 64%; width: 120px; height: 120px;" id="blob-fnb"></div>
+                            </div>
+
+                            <!-- Floating Map Markers -->
+                            <div class="map-label-pill pill-blue" style="top: 34%; left: 25%;" id="pill-metro">
+                                <div class="lbl-icon"><svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect></svg></div>
+                                <div class="lbl-texts">
+                                    <span class="lbl-title">Metro</span>
+                                    <span class="lbl-desc" id="status-text-metro">Incoming</span>
                                 </div>
-                                <div class="progress-track"><div class="progress-fill" style="width: 86%;" id="progress-fill-confidence"></div></div>
                             </div>
+
+                            <div class="map-label-pill pill-yellow" style="top: 33%; left: 44%;">
+                                <div class="lbl-icon"><svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle></svg></div>
+                                <div class="lbl-texts">
+                                    <span class="lbl-title">Gate B</span>
+                                    <span class="lbl-desc">Moderate</span>
+                                </div>
+                            </div>
+
+                            <div class="map-label-pill pill-red" style="top: 39%; left: 61%;" id="pill-gate-a">
+                                <div class="lbl-icon"><svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" fill="none"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon></svg></div>
+                                <div class="lbl-texts">
+                                    <span class="lbl-title">Gate A</span>
+                                    <span class="lbl-desc" id="status-text-gate-a">High Density</span>
+                                </div>
+                            </div>
+
+                            <div class="map-label-pill pill-green" style="top: 57%; left: 62%;" id="pill-fnb">
+                                <div class="lbl-icon"><svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+                                <div class="lbl-texts">
+                                    <span class="lbl-title">Food Court</span>
+                                    <span class="lbl-desc" id="status-text-fnb">Normal</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gradient Legend Bar -->
+                        <div class="heatmap-legend-bar">
+                            <span class="legend-text">Low Density</span>
+                            <div class="legend-gradient"></div>
+                            <span class="legend-text">High Density</span>
                         </div>
                     </div>
 
-                    <div class="copilot-footer">
-                        <button class="glass-btn primary-btn" id="btn-apply-rec" style="width: 100%; height: 44px; color: #ffffff !important; background: var(--accent-blue) !important; border: 1px solid var(--accent-blue) !important;">
-                            Apply Recommendation
-                        </button>
+                    <!-- Live Timeline Card -->
+                    <div class="live-timeline-card glass-panel">
+                        <div class="timeline-header-row">
+                            <div class="timeline-title-tag">
+                                <h3>Live Timeline</h3>
+                                <span class="live-status-badge"><span class="dot-live"></span> LIVE</span>
+                            </div>
+                            <div class="timeline-actions">
+                                <div class="dropdown-filter-btn">
+                                    <span>All Events</span>
+                                    <svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </div>
+                                <button class="timeline-play-btn">
+                                    <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="timeline-track-twin"></div>
+                        <div class="timeline-scroll-twin" id="timeline-scroll-container">
+                            <div class="timeline-node-twin active">
+                                <span class="node-time">21:05</span>
+                                <div class="node-icon-circle icon-blue">
+                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path></svg>
+                                </div>
+                                <span class="node-title">Metro Inflow Increased</span>
+                                <span class="node-desc">Metro Line 2 inbound</span>
+                            </div>
+
+                            <div class="timeline-node-twin active">
+                                <span class="node-time">21:09</span>
+                                <div class="node-icon-circle icon-red">
+                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+                                </div>
+                                <span class="node-title">Density Warning</span>
+                                <span class="node-desc">Gate A density 75%</span>
+                            </div>
+
+                            <div class="timeline-node-twin active">
+                                <span class="node-time">21:12</span>
+                                <div class="node-icon-circle icon-purple">
+                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                </div>
+                                <span class="node-title">AI Recommendation</span>
+                                <span class="node-desc">Open Gate B suggested</span>
+                            </div>
+
+                            <div class="timeline-node-twin" id="node-recommendation-applied" style="opacity:0.4;">
+                                <span class="node-time" id="time-rec-applied">21:14</span>
+                                <div class="node-icon-circle icon-green">
+                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <span class="node-title" id="event-rec-applied">Action Taken</span>
+                                <span class="node-desc">Gate B opened</span>
+                            </div>
+
+                            <div class="timeline-node-twin" id="node-crowd-improved" style="opacity:0.4;">
+                                <span class="node-time">21:18</span>
+                                <div class="node-icon-circle icon-blue">
+                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <span class="node-title">Density Improving</span>
+                                <span class="node-desc">Gate A density 60%</span>
+                            </div>
+
+                            <div class="timeline-node-twin" id="node-situation-normal" style="opacity:0.4;">
+                                <span class="node-time">21:21</span>
+                                <div class="node-icon-circle icon-green">
+                                    <svg viewBox="0 0 24 24" width="8" height="8" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <span class="node-title">Situation Normal</span>
+                                <span class="node-desc">All clear!</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Lower Section: Incidents, Metrics, and Timeline -->
-            <div class="dashboard-lower-row">
-                <!-- Current Incidents -->
-                <div class="lower-widget glass-panel list-widget">
-                    <h3>Current Incidents</h3>
-                    <div class="incident-list" id="incident-list-container">
-                        <div class="incident-item priority-high" id="inc-1">
-                            <div class="incident-header-row">
-                                <span class="inc-title">High Crowd Density</span>
-                                <span class="inc-badge priority-high-badge">HIGH</span>
+                <!-- RIGHT COLUMN: AI Copilot -->
+                <div class="db-right-col">
+                    <div class="copilot-card glass-panel">
+                        <div class="copilot-header-twin">
+                            <div class="copilot-title-row">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="copilot-sparkle"><path d="M9 21.5L9.75 16.5L14.75 15.75L9.75 15L9 10L8.25 15L3.25 15.75L8.25 16.5L9 21.5Z M17 11.5L17.5 8L21 7.5L17.5 7L17 3.5L16.5 7L13 7.5L16.5 8L17 11.5Z"></path></svg>
+                                <h3>AI Copilot</h3>
                             </div>
-                            <div class="incident-meta-row">
-                                <span>Gate A</span>
-                                <span>2 minutes ago</span>
-                            </div>
+                            <span class="beta-badge-purple">BETA</span>
                         </div>
 
-                        <div class="incident-item priority-medium" id="inc-2">
-                            <div class="incident-header-row">
-                                <span class="inc-title">Metro Inflow Surge</span>
-                                <span class="inc-badge priority-medium-badge">MEDIUM</span>
+                        <div class="copilot-sections-wrapper">
+                            <!-- Situation Section -->
+                            <div class="copilot-sec-twin">
+                                <span class="sec-title-twin">Current Situation</span>
+                                <p class="sec-text-desc" id="sit-desc">
+                                    Crowd density is neighboring near Gate A.<br>
+                                    Metro inflow will add ~1,200 visitors in 10 minutes.<br>
+                                    Overall situation is under control.
+                                </p>
                             </div>
-                            <div class="incident-meta-row">
-                                <span>Metro Station</span>
-                                <span>5 minutes ago</span>
+
+                            <!-- Recommendations Section -->
+                            <div class="copilot-sec-twin">
+                                <span class="sec-title-twin">AI Recommendations</span>
+                                <div class="recommendations-twin-list">
+                                    <div class="rec-twin-item">
+                                        <span class="rec-num">1</span>
+                                        <span class="rec-txt" id="rec-text-1">Open Gate B to balance crowd flow</span>
+                                    </div>
+                                    <div class="rec-twin-item">
+                                        <span class="rec-num">2</span>
+                                        <span class="rec-txt">Deploy 2 volunteers at Metro exit</span>
+                                    </div>
+                                    <div class="rec-twin-item">
+                                        <span class="rec-num">3</span>
+                                        <span class="rec-txt">Increase signage towards Food Court</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Progress Meters Section -->
+                            <div class="copilot-sec-twin">
+                                <div class="meter-row-twin">
+                                    <div class="meter-header-twin">
+                                        <span class="meter-name">Estimated Impact</span>
+                                        <span class="meter-value text-green" id="progress-val-improvement">18% <span style="font-size:9px; font-weight:normal; color:rgba(255,255,255,0.4)">Improvement in crowd distribution</span></span>
+                                    </div>
+                                    <div class="progress-track-twin"><div class="progress-fill-twin fill-green-bar" style="width: 18%;" id="progress-fill-improvement"></div></div>
+                                </div>
+
+                                <div class="meter-row-twin" style="margin-top:14px;">
+                                    <div class="meter-header-twin">
+                                        <span class="meter-name">Confidence Score</span>
+                                        <span class="meter-value" id="progress-val-confidence">86%</span>
+                                    </div>
+                                    <div class="progress-track-twin"><div class="progress-fill-twin fill-blue-bar" style="width: 86%;" id="progress-fill-confidence"></div></div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="incident-item priority-low" id="inc-3">
-                            <div class="incident-header-row">
-                                <span class="inc-title">Food Court Queue Normalized</span>
-                                <span class="inc-badge priority-low-badge">LOW</span>
-                            </div>
-                            <div class="incident-meta-row">
-                                <span>Food Court</span>
-                                <span>9 minutes ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Operational Metrics -->
-                <div class="lower-widget glass-panel metrics-widget">
-                    <h3>Operational Metrics</h3>
-                    <div class="metrics-grid">
-                        <div class="metric-mini-card">
-                            <span class="m-title">Transport Inflow</span>
-                            <div class="m-body">
-                                <span class="m-val" id="metric-transport-val">1,150</span>
-                                <svg class="mini-sparkline" id="mini-sparkline-transport" viewBox="0 0 60 20" width="50" height="16"></svg>
-                            </div>
-                        </div>
-                        <div class="metric-mini-card">
-                            <span class="m-title">Platform Occupancy</span>
-                            <div class="m-body">
-                                <span class="m-val" id="metric-occupancy-val">68%</span>
-                                <svg class="mini-sparkline" id="mini-sparkline-occupancy" viewBox="0 0 60 20" width="50" height="16"></svg>
-                            </div>
-                        </div>
-                        <div class="metric-mini-card">
-                            <span class="m-title">Queue Length</span>
-                            <div class="m-body">
-                                <span class="m-val" id="metric-queue-val">240</span>
-                                <svg class="mini-sparkline" id="mini-sparkline-queue" viewBox="0 0 60 20" width="50" height="16"></svg>
-                            </div>
-                        </div>
-                        <div class="metric-mini-card">
-                            <span class="m-title">Average Wait</span>
-                            <div class="m-body">
-                                <span class="m-val" id="metric-wait-val">8 min</span>
-                                <svg class="mini-sparkline" id="mini-sparkline-wait" viewBox="0 0 60 20" width="50" height="16"></svg>
-                            </div>
-                        </div>
-                        <div class="metric-mini-card">
-                            <span class="m-title">Escalator Usage</span>
-                            <div class="m-body">
-                                <span class="m-val" id="metric-escalator-val">42%</span>
-                                <svg class="mini-sparkline" id="mini-sparkline-escalator" viewBox="0 0 60 20" width="50" height="16"></svg>
-                            </div>
-                        </div>
-                        <div class="metric-mini-card">
-                            <span class="m-title">Medical Requests</span>
-                            <div class="m-body">
-                                <span class="m-val" id="metric-medical-val">0</span>
-                                <svg class="mini-sparkline" id="mini-sparkline-medical" viewBox="0 0 60 20" width="50" height="16"></svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Operations Timeline -->
-                <div class="lower-widget glass-panel timeline-widget">
-                    <h3>Operations Timeline</h3>
-                    <div class="timeline-container">
-                        <div class="timeline-track"></div>
-                        <div class="timeline-nodes-scroll" id="timeline-scroll-container">
-                            <div class="timeline-node animate-node">
-                                <span class="time-stamp">21:05</span>
-                                <span class="time-event">Metro Arrival</span>
-                            </div>
-                            <div class="timeline-node animate-node">
-                                <span class="time-stamp">21:09</span>
-                                <span class="time-event">Crowd Density Warning</span>
-                            </div>
-                            <div class="timeline-node animate-node">
-                                <span class="time-stamp">21:12</span>
-                                <span class="time-event">AI Recommendation Generated</span>
-                            </div>
-                            <div class="timeline-node animate-node" id="node-recommendation-applied" style="opacity: 0.4;">
-                                <span class="time-stamp" id="time-rec-applied">21:14</span>
-                                <span class="time-event" id="event-rec-applied">Recommendation Applied</span>
-                            </div>
-                            <div class="timeline-node animate-node" id="node-crowd-improved" style="opacity: 0.4;">
-                                <span class="time-stamp">21:18</span>
-                                <span class="time-event">Crowd Improved</span>
-                            </div>
-                            <div class="timeline-node animate-node" id="node-situation-normal" style="opacity: 0.4;">
-                                <span class="time-stamp">21:21</span>
-                                <span class="time-event">Situation Normal</span>
-                            </div>
+                        <!-- Apply CTA -->
+                        <div class="copilot-footer-twin">
+                            <button class="copilot-cta-btn" id="btn-apply-rec">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="margin-right:6px;"><path d="M9 21.5L9.75 16.5L14.75 15.75L9.75 15L9 10L8.25 15L3.25 15.75L8.25 16.5L9 21.5Z"></path></svg>
+                                <span>Apply Recommendation</span>
+                            </button>
                         </div>
                     </div>
                 </div>

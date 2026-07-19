@@ -24,76 +24,41 @@ export function initDashboard() {
     }
 }
 
-// 1. Setup Tab Clicking & Sliding Underline
+// 1. Setup Left Sidebar Tab Clicking
 function setupTabs() {
-    const tabContainer = document.querySelector('.dashboard-tabs');
-    const tabs = document.querySelectorAll('.tab-item');
-    const underline = document.querySelector('.tab-underline');
-    
-    if (!tabContainer || !underline) return;
-    
-    function updateUnderline(activeTab) {
-        const rect = activeTab.getBoundingClientRect();
-        const containerRect = tabContainer.getBoundingClientRect();
-        
-        underline.style.left = `${rect.left - containerRect.left}px`;
-        underline.style.width = `${rect.width}px`;
-    }
-    
-    // Initialize underline position on first active tab
-    const activeTab = tabContainer.querySelector('.tab-item.active');
-    if (activeTab) {
-        // Wait minor delay for render layout
-        setTimeout(() => updateUnderline(activeTab), 100);
-    }
-    
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            updateUnderline(tab);
+    const items = document.querySelectorAll('.sidebar-item');
+    items.forEach(item => {
+        item.addEventListener('click', () => {
+            items.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
             
-            // Switch mock data if needed, or filter dashboard tabs view
-            const selectedTab = tab.getAttribute('data-tab');
-            console.log(`Switched dashboard tab context to: ${selectedTab}`);
+            const selectedTab = item.getAttribute('data-tab');
+            console.log(`Switched dashboard sidebar tab context to: ${selectedTab}`);
         });
-    });
-    
-    window.addEventListener('resize', () => {
-        const currentActive = tabContainer.querySelector('.tab-item.active');
-        if (currentActive) {
-            updateUnderline(currentActive);
-        }
     });
 }
 
 // 2. Generate and Render SVG Sparkline charts
 function setupSparklines() {
-    // Generate simple SVG path coordinates
     const chartsData = {
         'sparkline-attendance': [30, 35, 45, 60, 75, 78, 78],
         'sparkline-occupancy': [20, 25, 38, 48, 52, 52, 50],
         'sparkline-transport': [100, 250, 450, 800, 1150, 950, 800],
         'sparkline-wait': [15, 14, 12, 10, 8, 8, 7],
         'sparkline-alerts': [0, 1, 1, 2, 2, 2, 2],
-        'sparkline-staff': [245, 245, 245, 245, 245, 245, 245],
-        
-        // Mini metrics cards sparklines
-        'mini-sparkline-transport': [100, 200, 400, 600, 1150, 1000],
-        'mini-sparkline-occupancy': [30, 45, 55, 60, 68, 65],
-        'mini-sparkline-queue': [50, 80, 120, 180, 240, 200],
-        'mini-sparkline-wait': [12, 10, 9, 8, 8, 7],
-        'mini-sparkline-escalator': [40, 42, 42, 42, 42, 42],
-        'mini-sparkline-medical': [0, 0, 1, 0, 0, 0]
+        'sparkline-staff': [245, 245, 245, 245, 245, 245, 245]
     };
     
     Object.keys(chartsData).forEach(id => {
         const svg = document.getElementById(id);
         if (!svg) return;
         
+        // Clear previous path if any
+        svg.innerHTML = '';
+        
         const data = chartsData[id];
-        const width = parseFloat(svg.getAttribute('width') || 100);
-        const height = parseFloat(svg.getAttribute('height') || 30);
+        const width = parseFloat(svg.getAttribute('width') || 70);
+        const height = parseFloat(svg.getAttribute('height') || 24);
         
         const minVal = Math.min(...data);
         const maxVal = Math.max(...data);
@@ -116,12 +81,15 @@ function setupSparklines() {
 
 // 3. Initialize Operations Timeline states
 function setupTimeline() {
-    const nodes = document.querySelectorAll('#timeline-scroll-container .timeline-node');
+    const nodes = document.querySelectorAll('#timeline-scroll-container .timeline-node-twin');
     // Active nodes on start up are the first 3
     nodes.forEach((node, idx) => {
         if (idx < 3) {
             node.classList.add('active');
             node.style.opacity = '1';
+        } else {
+            node.classList.remove('active');
+            node.style.opacity = '0.4';
         }
     });
 }
@@ -134,11 +102,12 @@ function setupCopilotActions() {
     btnApply.addEventListener('click', () => {
         if (btnApply.disabled) return;
         
-        btnApply.innerText = "Applying Recommendation...";
+        const btnText = btnApply.querySelector('span');
+        if (btnText) btnText.innerText = "Applying Recommendation...";
         btnApply.disabled = true;
         btnApply.style.opacity = '0.6';
         
-        // Simulate progress application (1 second delay)
+        // Simulate progress application (1.2 second delay)
         setTimeout(() => {
             // 1. Update active alerts count KPI card
             const alertVal = document.getElementById('kpi-val-alerts');
@@ -155,8 +124,8 @@ function setupCopilotActions() {
                 alertStatus.classList.add('text-warning');
             }
             if (alertIcon) {
-                alertIcon.classList.remove('text-danger');
-                alertIcon.classList.add('text-warning');
+                alertIcon.classList.remove('icon-red');
+                alertIcon.classList.add('icon-orange');
             }
             
             // 2. Animate and remove High Priority incident card
@@ -180,25 +149,23 @@ function setupCopilotActions() {
             const statusGateA = document.getElementById('status-text-gate-a');
             const pillGateA = document.getElementById('pill-gate-a');
             if (blobGateA) {
-                // Animate transition of color gradient from red to yellow
-                blobGateA.className = 'heatmap-blob blob-yellow';
+                blobGateA.className = 'heatmap-blob-twin blob-yellow-twin';
             }
             if (statusGateA) {
-                statusGateA.innerText = 'MODERATE';
-                statusGateA.classList.remove('text-danger');
-                statusGateA.classList.add('text-warning');
+                statusGateA.innerText = 'Moderate';
+            }
+            if (pillGateA) {
+                pillGateA.className = 'map-label-pill pill-yellow';
             }
             
-            // 4. Update AI Copilot Situation list text
-            const sitGateA = document.getElementById('sit-gate-a');
-            if (sitGateA) {
-                sitGateA.innerText = "Crowd density near Gate A normalized (Recommendation Applied).";
-                sitGateA.classList.remove('text-danger');
-                sitGateA.classList.add('text-success');
+            // 4. Update AI Copilot Situation text description
+            const sitDesc = document.getElementById('sit-desc');
+            if (sitDesc) {
+                sitDesc.innerHTML = "Crowd density near Gate A normalized (Recommendation Applied).<br>Metro inflow managed successfully.<br>Overall venue remains operational.";
             }
             
             // 5. Update timeline status nodes
-            const nodes = document.querySelectorAll('#timeline-scroll-container .timeline-node');
+            const nodes = document.querySelectorAll('#timeline-scroll-container .timeline-node-twin');
             nodes.forEach((node, idx) => {
                 if (idx >= 3) {
                     setTimeout(() => {
@@ -208,9 +175,9 @@ function setupCopilotActions() {
                 }
             });
             
-            btnApply.innerText = "Recommendation Applied";
+            if (btnText) btnText.innerText = "Recommendation Applied";
             btnApply.style.background = 'var(--accent-green) !important';
-            btnApply.style.borderColor = 'var(--accent-green) !important';
+            btnApply.style.boxShadow = '0 4px 12px rgba(52, 199, 89, 0.3)';
             
             console.log("Copilot operations successfully executed!");
         }, 1200);
@@ -220,34 +187,34 @@ function setupCopilotActions() {
 // 5. Entrance GSAP Animation Sequence
 function animateEntrance() {
     // Animate KPI cards fade up staggered
-    const kpiCards = document.querySelectorAll('.kpi-card');
+    const kpiCards = document.querySelectorAll('.kpi-card-twin');
     gsap.fromTo(kpiCards, 
         { opacity: 0, y: 15 },
         { opacity: 1, y: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out', clearProps: 'transform' }
     );
     
-    // Animate middle layout columns
-    const heatmap = document.querySelector('.stadium-heatmap-widget');
-    const copilot = document.querySelector('.copilot-panel');
+    // Animate left/right panels
+    const sidebar = document.querySelector('.sidebar-nav');
+    const incidents = document.querySelector('.current-incidents-card');
+    const heatmap = document.querySelector('.stadium-intel-card');
+    const timeline = document.querySelector('.live-timeline-card');
+    const copilot = document.querySelector('.copilot-card');
+    
+    if (sidebar) {
+        gsap.fromTo(sidebar, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' });
+    }
+    if (incidents) {
+        gsap.fromTo(incidents, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.4, delay: 0.1, ease: 'power2.out' });
+    }
     if (heatmap) {
-        gsap.fromTo(heatmap, 
-            { opacity: 0, x: -20 },
-            { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' }
-        );
+        gsap.fromTo(heatmap, { opacity: 0, scale: 0.98 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' });
+    }
+    if (timeline) {
+        gsap.fromTo(timeline, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.4, delay: 0.1, ease: 'power2.out' });
     }
     if (copilot) {
-        gsap.fromTo(copilot, 
-            { opacity: 0, x: 20 },
-            { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' }
-        );
+        gsap.fromTo(copilot, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' });
     }
-    
-    // Animate lower section cards staggered
-    const lowerCards = document.querySelectorAll('.lower-widget');
-    gsap.fromTo(lowerCards,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' }
-    );
     
     // Animate AI Copilot progress bar fills
     const fillImprovement = document.getElementById('progress-fill-improvement');

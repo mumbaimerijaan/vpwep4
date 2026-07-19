@@ -127,7 +127,7 @@
                         <h2 id="card-title">GATE A – MAIN ENTRANCE</h2>
                         <span id="card-status-pill" class="status-pill status-operational"><span class="dot"></span> <span id="card-status-text">OPERATIONAL</span></span>
                     </div>
-                    <button id="card-close" class="icon-btn subtle-btn">
+                    <button id="card-close" class="icon-btn subtle-btn" aria-label="Close details">
                         <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
@@ -182,29 +182,13 @@
 
         <!-- Bottom Center Apple-style Dock -->
         <nav class="bottom-dock glass-panel">
-            <button class="dock-item active" id="dock-home">
+            <button class="dock-item active" id="dock-home" aria-label="Navigate to Home screen">
                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 <span>HOME</span>
             </button>
-            <button class="dock-item" id="dock-operations">
+            <button class="dock-item" id="dock-operations" aria-label="Navigate to Operations Dashboard">
                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51 1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                 <span>OPERATIONS</span>
-            </button>
-            <button class="dock-item" id="dock-analytics">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                <span>ANALYTICS</span>
-            </button>
-            <button class="dock-item" id="dock-transport">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><path d="M4 16c4 0 8-4 8-8"></path><path d="M12 20c0-4 4-8 8-8"></path></svg>
-                <span>TRANSPORT</span>
-            </button>
-            <button class="dock-item" id="dock-security">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                <span>SECURITY</span>
-            </button>
-            <button class="dock-item" id="dock-settings">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                <span>SETTINGS</span>
             </button>
         </nav>
 
@@ -916,7 +900,7 @@
                         <div class="copilot-header-twin">
                             <div class="copilot-title-row">
                                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="copilot-sparkle"><path d="M9 21.5L9.75 16.5L14.75 15.75L9.75 15L9 10L8.25 15L3.25 15.75L8.25 16.5L9 21.5Z M17 11.5L17.5 8L21 7.5L17.5 7L17 3.5L16.5 7L13 7.5L16.5 8L17 11.5Z"></path></svg>
-                                <h3>AI Copilot</h3>
+                                <h3>AI Operational Copilot (LLM-Guided)</h3>
                             </div>
                             <span class="beta-badge-purple">BETA</span>
                         </div>
@@ -973,7 +957,7 @@
 
                         <!-- Apply CTA -->
                         <div class="copilot-footer-twin">
-                            <button class="copilot-cta-btn" id="btn-apply-rec">
+                            <button class="copilot-cta-btn" id="btn-apply-rec" aria-label="Apply AI recommended mitigation action">
                                 <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="margin-right:6px;"><path d="M9 21.5L9.75 16.5L14.75 15.75L9.75 15L9 10L8.25 15L3.25 15.75L8.25 16.5L9 21.5Z"></path></svg>
                                 <span>Apply Recommendation</span>
                             </button>
@@ -996,7 +980,7 @@
     </div>
 
     <!-- Return to Main View Button -->
-    <button id="btn-return" class="glass-btn primary-btn hidden" style="position: absolute; bottom: 160px; left: 50%; transform: translateX(-50%); width: auto; padding: 0 24px; z-index: 100; background: rgba(0, 0, 0, 0.75) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+    <button id="btn-return" class="glass-btn primary-btn hidden" aria-label="Return to stadium 3D overview" style="position: absolute; bottom: 160px; left: 50%; transform: translateX(-50%); width: auto; padding: 0 24px; z-index: 100; background: rgba(0, 0, 0, 0.75) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px;">
         <svg viewBox="0 0 24 24" width="16" height="16" stroke="#ffffff" stroke-width="2" fill="none"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         Return to Main View
     </button>

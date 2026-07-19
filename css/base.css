@@ -37,11 +37,10 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-    background-color: var(--bg-dark);
-    color: var(--text-light);
-    font-family: var(--font-sans);
-    overflow: hidden;
-    width: 100vw;
-    height: 100vh;
+/* Focus indicator for keyboard accessibility */
+button:focus-visible, 
+a:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
 }

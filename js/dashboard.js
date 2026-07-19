@@ -1,4 +1,5 @@
 // js/dashboard.js
+import { CHARTS_DATA } from './constants.js';
 
 export function initDashboard() {
     setupTabs();
@@ -49,21 +50,14 @@ function setupTabs() {
 
 // 2. Generate and Render SVG Sparkline charts
 function setupSparklines() {
-    const chartsData = {
-        'sparkline-attendance': [30, 35, 45, 60, 75, 78, 78],
-        'sparkline-occupancy': [20, 25, 38, 48, 52, 52, 50],
-        'sparkline-transport': [100, 250, 450, 800, 1150, 950, 800],
-        'sparkline-wait': [15, 14, 12, 10, 8, 8, 7],
-        'sparkline-alerts': [0, 1, 1, 2, 2, 2, 2],
-        'sparkline-staff': [245, 245, 245, 245, 245, 245, 245]
-    };
+    const chartsData = CHARTS_DATA;
     
     Object.keys(chartsData).forEach(id => {
         const svg = document.getElementById(id);
         if (!svg) return;
         
         // Clear previous path if any
-        svg.innerHTML = '';
+        svg.textContent = '';
         
         const data = chartsData[id];
         const width = parseFloat(svg.getAttribute('width') || 70);

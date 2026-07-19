@@ -1,33 +1,35 @@
 import * as THREE from 'three';
+import { LIGHTS_CONFIG } from './config.js';
 
 export function setupLighting(scene) {
+    const cfg = LIGHTS_CONFIG;
+    
     // Hemisphere Light for soft ambient illumination (sunset sky color, ground color)
-    const hemiLight = new THREE.HemisphereLight(0xffa07a, 0x444444, 0.6);
-    hemiLight.position.set(0, 200, 0);
+    const hemiLight = new THREE.HemisphereLight(cfg.hemiLight.skyColor, cfg.hemiLight.groundColor, cfg.hemiLight.intensity);
+    hemiLight.position.set(cfg.hemiLight.pos.x, cfg.hemiLight.pos.y, cfg.hemiLight.pos.z);
     scene.add(hemiLight);
 
     // Directional Light for the main sun source (Sunset: warm, low angle)
-    const dirLight = new THREE.DirectionalLight(0xffdcb4, 1.2);
-    // Lower angle for sunset, coming from the back-right (approx 210 rotation)
-    dirLight.position.set(-100, 50, -200);
+    const dirLight = new THREE.DirectionalLight(cfg.dirLight.color, cfg.dirLight.intensity);
+    dirLight.position.set(cfg.dirLight.pos.x, cfg.dirLight.pos.y, cfg.dirLight.pos.z);
     dirLight.castShadow = true;
     
     // Optimize shadows
-    dirLight.shadow.mapSize.width = 2048;
-    dirLight.shadow.mapSize.height = 2048;
-    dirLight.shadow.camera.near = 10;
-    dirLight.shadow.camera.far = 800;
+    dirLight.shadow.mapSize.width = cfg.dirLight.shadowMapSize;
+    dirLight.shadow.mapSize.height = cfg.dirLight.shadowMapSize;
+    dirLight.shadow.camera.near = cfg.dirLight.shadowNear;
+    dirLight.shadow.camera.far = cfg.dirLight.shadowFar;
     
-    const d = 250;
+    const d = cfg.dirLight.shadowFrustum;
     dirLight.shadow.camera.left = -d;
     dirLight.shadow.camera.right = d;
     dirLight.shadow.camera.top = d;
     dirLight.shadow.camera.bottom = -d;
-    dirLight.shadow.bias = -0.0005;
+    dirLight.shadow.bias = cfg.dirLight.shadowBias;
 
     scene.add(dirLight);
 
     // Gentle ambient light to fill in harsh black shadows
-    const ambientLight = new THREE.AmbientLight(0xffeedd, 0.4);
+    const ambientLight = new THREE.AmbientLight(cfg.ambientLight.color, cfg.ambientLight.intensity);
     scene.add(ambientLight);
 }

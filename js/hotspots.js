@@ -1,17 +1,15 @@
 import * as THREE from 'three';
+import { HOTSPOT_DATA } from './constants.js';
+import { STADIUM_COLLIDER_CONFIG } from './config.js';
+import { flyToHotspot } from './animation.js';
 
 let sceneRef, cameraRef, containerRef;
 
-// The hotspots with mock premium data
-const hotspotData = [
-    { id: 'gate-a', title: 'GATE A – MAIN ENTRANCE', color: 'var(--accent-blue)', status: 'OPERATIONAL', statusColor: 'var(--accent-green)', icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>', stats: { occ: '78%', queue: 240, wait: 18, rec: 'Normal' }, pos: new THREE.Vector3(0, 25, -90) },
-    { id: 'parking', title: 'PARKING ZONE P1', color: 'var(--accent-blue)', status: 'CONGESTED', statusColor: 'var(--accent-orange)', icon: '<path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"></path><path d="M9 8h4a2 2 0 0 1 0 4H9v4"></path>', stats: { occ: '92%', queue: 412, wait: 32, rec: 'Divert' }, pos: new THREE.Vector3(120, 10, -80) },
-    { id: 'vip', title: 'VIP LOUNGE', color: 'var(--accent-purple)', status: 'SECURE', statusColor: 'var(--accent-green)', icon: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>', stats: { occ: '45%', queue: 12, wait: 2, rec: 'Clear' }, pos: new THREE.Vector3(140, 15, 30) },
-    { id: 'fnb', title: 'CONCOURSE F&B', color: 'var(--accent-orange)', status: 'BUSY', statusColor: 'var(--accent-orange)', icon: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line>', stats: { occ: '88%', queue: 156, wait: 24, rec: 'Manage' }, pos: new THREE.Vector3(90, 10, 130) },
-    { id: 'security', title: 'SECURITY CHECKPOINT', color: 'var(--accent-red)', status: 'CRITICAL', statusColor: 'var(--accent-red)', icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>', stats: { occ: '99%', queue: 890, wait: 45, rec: 'Deploy' }, pos: new THREE.Vector3(-60, 10, 110) },
-    { id: 'fanzone', title: 'FAN ZONE PLAZA', color: 'var(--accent-green)', status: 'ACTIVE', statusColor: 'var(--accent-green)', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>', stats: { occ: '65%', queue: 45, wait: 5, rec: 'Normal' }, pos: new THREE.Vector3(-130, 10, 20) },
-    { id: 'metro', title: 'METRO STATION 1', color: 'var(--accent-green)', status: 'OPERATIONAL', statusColor: 'var(--accent-green)', icon: '<rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><path d="M4 16c4 0 8-4 8-8"></path><path d="M12 20c0-4 4-8 8-8"></path>', stats: { occ: '52%', queue: 120, wait: 8, rec: 'Normal' }, pos: new THREE.Vector3(-150, 10, -60) }
-];
+// Re-map POS values to THREE.Vector3 instances
+const hotspotData = HOTSPOT_DATA.map(h => ({
+    ...h,
+    pos: new THREE.Vector3(h.pos[0], h.pos[1], h.pos[2])
+}));
 
 const hotspotElements = [];
 let stadiumCollider;
@@ -21,9 +19,10 @@ export function setupHotspots(scene, camera, container) {
     cameraRef = camera;
     containerRef = container;
     
+    const colCfg = STADIUM_COLLIDER_CONFIG;
     // Create an invisible cylinder collider that perfectly represents the circular stadium volume
-    const colliderGeo = new THREE.CylinderGeometry(140, 140, 80, 16);
-    const colliderPos = new THREE.Vector3(49, 40, 19);
+    const colliderGeo = new THREE.CylinderGeometry(colCfg.radiusTop, colCfg.radiusBottom, colCfg.height, colCfg.radialSegments);
+    const colliderPos = new THREE.Vector3(colCfg.pos.x, colCfg.pos.y, colCfg.pos.z);
     
     // Crucial: Use transparent/opacity: 0 instead of visible: false.
     // Three.js Raycaster ignores meshes with visible: false, which was causing our occlusion logic to fail!
@@ -58,9 +57,7 @@ export function setupHotspots(scene, camera, container) {
             <span class="hotspot-label">${data.title}</span>
         `;
         
-        el.addEventListener('click', async () => {
-            // Import and call GSAP fly method from animation.js
-            const { flyToHotspot } = await import('./animation.js');
+        el.addEventListener('click', () => {
             flyToHotspot(data.pos);
 
             // Update the global info card
@@ -81,14 +78,14 @@ export function setupHotspots(scene, camera, container) {
             // Update location image dynamically
             const imgEl = document.getElementById('card-location-image');
             if (imgEl) {
-                let imgPath = 'assets/images/locations/vip_lounge.png';
-                if (data.id === 'gate-a') imgPath = 'assets/images/locations/gate_a.png';
-                else if (data.id === 'parking') imgPath = 'assets/images/locations/parking.png';
-                else if (data.id === 'vip') imgPath = 'assets/images/locations/vip_lounge.png';
-                else if (data.id === 'fnb') imgPath = 'assets/images/locations/fnb.png';
-                else if (data.id === 'security') imgPath = 'assets/images/locations/security.png';
-                else if (data.id === 'fanzone') imgPath = 'assets/images/locations/fanzone.png';
-                else if (data.id === 'metro') imgPath = 'assets/images/locations/metro.png';
+                let imgPath = 'assets/images/locations/vip_lounge.jpg';
+                if (data.id === 'gate-a') imgPath = 'assets/images/locations/gate_a.jpg';
+                else if (data.id === 'parking') imgPath = 'assets/images/locations/parking.jpg';
+                else if (data.id === 'vip') imgPath = 'assets/images/locations/vip_lounge.jpg';
+                else if (data.id === 'fnb') imgPath = 'assets/images/locations/fnb.jpg';
+                else if (data.id === 'security') imgPath = 'assets/images/locations/security.jpg';
+                else if (data.id === 'fanzone') imgPath = 'assets/images/locations/fanzone.jpg';
+                else if (data.id === 'metro') imgPath = 'assets/images/locations/metro.jpg';
                 
                 imgEl.src = imgPath;
             }

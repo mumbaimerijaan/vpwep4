@@ -28,7 +28,7 @@ export function initScene() {
     
     // Setup skybox (HDRI Panorama) as a physical sphere so we can move it vertically
     const textureLoader = new THREE.TextureLoader();
-    const bgTexture = textureLoader.load('assets/images/skybox.png', () => {
+    const bgTexture = textureLoader.load('assets/images/skybox.jpg', () => {
         bgTexture.colorSpace = THREE.SRGBColorSpace;
         
         // Scale down the texture visually by 50% by tiling it
@@ -58,7 +58,7 @@ export function initScene() {
     });
 
     // Setup floor plane (Top View map)
-    const floorTexture = textureLoader.load('assets/images/floor.png');
+    const floorTexture = textureLoader.load('assets/images/floor.jpg');
     floorTexture.colorSpace = THREE.SRGBColorSpace;
     floorTexture.wrapS = THREE.ClampToEdgeWrapping;
     floorTexture.wrapT = THREE.ClampToEdgeWrapping;
@@ -80,4 +80,33 @@ export function initScene() {
     floor.position.y = -0.5;
     floor.receiveShadow = true;
     scene.add(floor);
+}
+
+export function disposeScene() {
+    if (!scene) return;
+    scene.traverse((object) => {
+        if (!object.isMesh) return;
+        
+        if (object.geometry) {
+            object.geometry.dispose();
+        }
+        
+        if (object.material) {
+            if (Array.isArray(object.material)) {
+                object.material.forEach(material => disposeMaterial(material));
+            } else {
+                disposeMaterial(object.material);
+            }
+        }
+    });
+}
+
+function disposeMaterial(material) {
+    material.dispose();
+    for (const key of Object.keys(material)) {
+        const value = material[key];
+        if (value && typeof value === 'object' && 'minFilter' in value) {
+            value.dispose();
+        }
+    }
 }

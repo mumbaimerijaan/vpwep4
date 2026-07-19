@@ -1,26 +1,28 @@
 import * as THREE from 'three';
+import { CAMERA_CONFIG } from './config.js';
 
 export let camera;
 export let cameraPivot;
 
 export function initCamera(container) {
+    const cfg = CAMERA_CONFIG;
     const width = container.clientWidth || window.innerWidth || 800;
     const height = container.clientHeight || window.innerHeight || 600;
     
     camera = new THREE.PerspectiveCamera(
-        45,
+        cfg.fov,
         width / height,
-        0.1,
-        10000 // Increased far plane to see massive floor
+        cfg.near,
+        cfg.far
     );
     
-    // Final view position with 20% more breathing room
-    camera.position.set(-260, 140.00, -90.00); 
+    // Final view position with camera initial parameters
+    camera.position.set(cfg.initialPos.x, cfg.initialPos.y, cfg.initialPos.z); 
     
     // Look slightly downwards towards the stadium center
-    camera.lookAt(0, 10, 0);
+    camera.lookAt(cfg.lookAt.x, cfg.lookAt.y, cfg.lookAt.z);
     
-    camera.zoom = 1.0;
+    camera.zoom = cfg.zoom;
     camera.updateProjectionMatrix();
 
     // Create a pivot for the camera drift animation

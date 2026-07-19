@@ -6,39 +6,43 @@ export function loadModel(scene) {
         
         // User's Google Drive File ID for stadium.glb
         const fileId = '1QVgfP9BEXjRx7FbGbxSZfRIuCQs-WGGA';
-        const directUrl = `https://docs.google.com/uc?export=download&id=${fileId}`;
-        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(directUrl)}`;
         
-        console.log("Loading Al Janoub Stadium model from Google Drive...");
-
-        // Try direct download link first
-        loader.load(
-            directUrl,
-            (gltf) => {
-                const model = gltf.scene;
-                setupModel(model, scene);
-                resolve(model);
-            },
-            undefined,
-            (error) => {
-                console.warn("Direct Google Drive load failed (likely CORS). Retrying through CORS proxy...", error);
-                
-                // Fallback to CORS proxy
-                loader.load(
-                    proxyUrl,
-                    (gltf) => {
-                        const model = gltf.scene;
-                        setupModel(model, scene);
-                        resolve(model);
-                    },
-                    undefined,
-                    (proxyError) => {
-                        console.error("Failed to load stadium model from Google Drive via proxy:", proxyError);
-                        reject(proxyError);
-                    }
-                );
+        // Symmetrical fail-safe URLs to bypass CORS restrictions
+        const urls = [
+            `https://docs.google.com/uc?export=download&id=${fileId}`,
+            `https://corsproxy.io/?${encodeURIComponent(`https://docs.google.com/uc?export=download&id=${fileId}`)}`,
+            `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://docs.google.com/uc?export=download&id=${fileId}`)}`
+        ];
+        
+        let attempt = 0;
+        
+        function tryLoad() {
+            if (attempt >= urls.length) {
+                reject(new Error("All Google Drive load paths failed due to strict CORS or access restrictions."));
+                return;
             }
-        );
+            
+            const currentUrl = urls[attempt];
+            console.log(`Loading Al Janoub Stadium (Attempt ${attempt + 1}/${urls.length})...`);
+            
+            loader.load(
+                currentUrl,
+                (gltf) => {
+                    const model = gltf.scene;
+                    setupModel(model, scene);
+                    console.log(`Stadium model loaded successfully on attempt ${attempt + 1}!`);
+                    resolve(model);
+                },
+                undefined,
+                (error) => {
+                    console.warn(`Load attempt ${attempt + 1} failed (likely CORS/Access restriction):`, error);
+                    attempt++;
+                    tryLoad();
+                }
+            );
+        }
+        
+        tryLoad();
     });
 }
 
@@ -51,7 +55,7 @@ function setupModel(model, scene) {
         }
     });
     
-    // Position appropriately
+    // Position Al Janoub Stadium model
     model.position.set(49, 0, 19);
     model.rotation.set(0, 0, 0);
     model.scale.set(1.4, 1.4, 1.4);
